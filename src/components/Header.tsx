@@ -1,0 +1,127 @@
+import { VFC, MouseEvent, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem, List, ListItem, ListItemIcon, ListItemText, Drawer } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import CategoryIcon from '@mui/icons-material/Category';
+import LabelIcon from '@mui/icons-material/Label';
+
+const menuItem = [
+  {
+    name: 'Category',
+    link: 'category',
+    icon: <CategoryIcon />
+  },
+  {
+    name: 'Tag',
+    link: 'tag',
+    icon: <LabelIcon />
+  }
+];
+
+const Header: VFC = () => {
+  const [menu, setMenu] = useState<boolean>(false);
+  const [login, setLogin] = useState<boolean>(false);
+
+  const toggleMenu = () => {
+    setMenu(!menu);
+  }
+  return (
+    <AppBar position="static">
+      <Container maxWidth="xl" sx={{ pl: 1 }}>
+        <Toolbar disableGutters>
+          <DashboardIcon sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }} />
+          {/* PC Logo */}
+          <Typography
+            variant="h6"
+            noWrap
+            component={Link}
+            to='/'
+            sx={{ color:'white', textDecoration: 'none', mr: 2, display: { xs: 'none', md: 'flex' } }}
+          >
+            React Editor
+          </Typography>
+          {/* SP Menu */}
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={() => toggleMenu()}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
+          {/* SP Logo */}
+          <Typography
+            variant="h6"
+            noWrap
+            component={Link}
+            to='/'
+            sx={{ color:'white', textDecoration: 'none', flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+          >
+            React Editor
+          </Typography>
+
+          {/* PC Menu */}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {menuItem.map((item, index) => (
+              <Button
+                key={index}
+                component={Link}
+                to={`/${item.link}`}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                {item.name}
+              </Button>
+            ))}
+          </Box>
+
+          {/* Right Menu */}
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton sx={{ p: 0 }}>
+                {login? <LockOpenIcon sx={{ color: 'white' }} />
+                : <ExitToAppIcon sx={{color:'white'}} />}
+              </IconButton>
+            </Tooltip>
+          </Box>
+
+        </Toolbar>
+        <Drawer
+            anchor='left'
+            open={menu}
+            onClose={() => setMenu(false)}
+          >
+            <Box
+            sx={{ width: 250 }}
+            role="presentation"
+            onClick={() => setMenu(false)}
+            onKeyDown={() => setMenu(false)}
+          >
+            <List>
+              {menuItem.map((item, index) => (
+                <ListItem 
+                  button
+                  key={index}
+                  component={Link}
+                  to={`/${item.link}`}
+                >
+                  <ListItemIcon>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.name} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+          </Drawer>
+      </Container>
+    </AppBar>
+  );
+};
+export default Header;

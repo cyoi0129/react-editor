@@ -1,57 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import { VFC, useEffect, createContext } from 'react';
 import './App.css';
+import { useNavigate, Routes, Route } from 'react-router-dom';
+import { useAppSelector, useAppDispatch } from './app/hooks';
+// import Cookies from 'js-cookie';
+import { Home, Post, Category, Tag } from './pages';
+import { Editor, ScrollToTop, Header, Footer } from './components';
 
-function App() {
+import { selectCategory, getCategoryList, selectTag, getTagList, selectPost, getPostList } from './features';
+import { postList, categoryList, tagList } from './features/types'
+
+import { Container } from '@mui/material';
+
+export const DataContext = createContext({} as {
+  posts: postList,
+  categories: categoryList,
+  tags: tagList
+})
+
+const App: VFC = () => {
+  const dispatch = useAppDispatch();
+  const postListData = useAppSelector(selectPost);
+  const categoryListData = useAppSelector(selectCategory);
+  const tagListData = useAppSelector(selectTag);
+  useEffect(() => {
+    dispatch(getPostList());
+    dispatch(getCategoryList());
+    dispatch(getTagList());
+  }, [dispatch]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <>
+      <DataContext.Provider value={{ posts: postListData, categories: categoryListData, tags: tagListData }}>
+        <ScrollToTop />
+        <Header />
+        <Container className="App-Container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path='/post/:id' element={<Post />} />
+            <Route path='/category' element={<Category />} />
+            <Route path='/tag' element={<Tag />} />
+          </Routes>
+        </Container>
+        <Footer />
+      </DataContext.Provider>
+    </>
   );
 }
 
