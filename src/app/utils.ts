@@ -1,4 +1,4 @@
-import { masterItem, postItem, postData, postInfo } from "../features/types";
+import { masterItem, postItem, postInfo } from "../features/types";
 
 // Date format process object
 export interface dateObject {
@@ -27,6 +27,12 @@ export function convertDate (date?: Date): dateObject {
     dayNumbner: newDate.getDate(),
   }
   return dateResult;
+}
+
+export function calNextID (itemList: masterItem[]|postItem[]): number {
+  const idList: number[] = (itemList as Array<masterItem | postItem>).map(item => item.id);
+  const maxID: number = Math.max(...idList);
+  return (maxID + 1);
 }
 
 export function getMasterNameByID (id: Number, list: Array<masterItem>): string {

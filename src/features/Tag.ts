@@ -11,12 +11,6 @@ const initialState: tagList = {
 export const getTagList = createAsyncThunk(
   'tag/getTagList',
     async () => {
-    //   const response = await fetch( basicData.env.local + '/tag/', {
-    //     method: 'GET',
-    //     credentials: 'include',
-    //     mode: 'cors',
-    //     cache: 'no-cache',
-    //   }).then((res) => res.json());
       const response = await fetchData('master/tag');
       return response;
     }
@@ -35,8 +29,8 @@ export const addTag = createAsyncThunk(
   }
 );
 
-export const editTag = createAsyncThunk(
-  'tag/editTag',
+export const updateTag = createAsyncThunk(
+  'tag/updateTag',
   async (targetTag: masterItem) => {
     const response = await fetch( basicData.env.local + '/tag/' + String(targetTag.id) + '/' , {
       method: 'PUT',
@@ -72,7 +66,7 @@ const tagSlice = createSlice({
     builder.addCase(addTag.fulfilled, (state, action) => {
       state.tags = [...state.tags, action.payload];
     });
-    builder.addCase(editTag.fulfilled, (state, action) => {
+    builder.addCase(updateTag.fulfilled, (state, action) => {
       state.tags = state.tags.filter(tag => tag.id !== action.payload.id);
       state.tags = [...state.tags, action.payload];
     });
@@ -92,10 +86,10 @@ const tagSlice = createSlice({
     builder.addCase(addTag.rejected, () => {
       // Error process
     });
-    builder.addCase(editTag.pending, () => {
+    builder.addCase(updateTag.pending, () => {
       // Error process
     });
-    builder.addCase(editTag.rejected, () => {
+    builder.addCase(updateTag.rejected, () => {
       // Error process
     });
     builder.addCase(removeTag.pending, () => {

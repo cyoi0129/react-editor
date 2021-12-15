@@ -11,12 +11,6 @@ const initialState: postList = {
 export const getPostList = createAsyncThunk(
   'post/getPostList',
     async () => {
-      // const response = await fetch( basicData.env.local + '/post/', {
-      //   method: 'GET',
-      //   credentials: 'include',
-      //   mode: 'cors',
-      //   cache: 'no-cache',
-      // }).then((res) => res.json());
       const response = await fetchData('post');
       return response;
     }
@@ -35,8 +29,8 @@ export const addPost = createAsyncThunk(
   }
 );
 
-export const editPost = createAsyncThunk(
-  'post/editPost',
+export const updatePost = createAsyncThunk(
+  'post/updatePost',
   async (targetPost: masterItem) => {
     const response = await fetch( basicData.env.local + '/post/' + String(targetPost.id) + '/' , {
       method: 'PUT',
@@ -72,7 +66,7 @@ const postSlice = createSlice({
     builder.addCase(addPost.fulfilled, (state, action) => {
       state.posts = [...state.posts, action.payload];
     });
-    builder.addCase(editPost.fulfilled, (state, action) => {
+    builder.addCase(updatePost.fulfilled, (state, action) => {
       state.posts = state.posts.filter(post => post.id !== action.payload.id);
       state.posts = [...state.posts, action.payload];
     });
@@ -92,10 +86,10 @@ const postSlice = createSlice({
     builder.addCase(addPost.rejected, () => {
       // Error process
     });
-    builder.addCase(editPost.pending, () => {
+    builder.addCase(updatePost.pending, () => {
       // Error process
     });
-    builder.addCase(editPost.rejected, () => {
+    builder.addCase(updatePost.rejected, () => {
       // Error process
     });
     builder.addCase(removePost.pending, () => {

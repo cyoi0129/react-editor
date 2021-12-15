@@ -11,12 +11,6 @@ const initialState: categoryList = {
 export const getCategoryList = createAsyncThunk(
   'category/getCategoryList',
     async () => {
-      // const response = await fetch( basicData.env.local + '/category/', {
-      //   method: 'GET',
-      //   credentials: 'include',
-      //   mode: 'cors',
-      //   cache: 'no-cache',
-      // }).then((res) => res.json());
       const response = await fetchData('master/category');
       return response;
     }
@@ -35,8 +29,8 @@ export const addCategory = createAsyncThunk(
   }
 );
 
-export const editCategory = createAsyncThunk(
-  'category/editCategory',
+export const updateCategory = createAsyncThunk(
+  'category/updateCategory',
   async (targetCategory: masterItem) => {
     const response = await fetch( basicData.env.local + '/category/' + String(targetCategory.id) + '/' , {
       method: 'PUT',
@@ -72,7 +66,7 @@ const categorySlice = createSlice({
     builder.addCase(addCategory.fulfilled, (state, action) => {
       state.categories = [...state.categories, action.payload];
     });
-    builder.addCase(editCategory.fulfilled, (state, action) => {
+    builder.addCase(updateCategory.fulfilled, (state, action) => {
       state.categories = state.categories.filter(category => category.id !== action.payload.id);
       state.categories = [...state.categories, action.payload];
     });
@@ -92,10 +86,10 @@ const categorySlice = createSlice({
     builder.addCase(addCategory.rejected, () => {
       // Error process
     });
-    builder.addCase(editCategory.pending, () => {
+    builder.addCase(updateCategory.pending, () => {
       // Error process
     });
-    builder.addCase(editCategory.rejected, () => {
+    builder.addCase(updateCategory.rejected, () => {
       // Error process
     });
     builder.addCase(removeCategory.pending, () => {
