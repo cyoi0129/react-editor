@@ -67,7 +67,6 @@ const PostInfo: VFC<Props> = (Props) => {
 
   const changeTagList = (event: SelectChangeEvent<typeof selectedTagList>) => {
     const tagArray = (event.target.value as []).map(tag => getMasterIDByName(tag, tagList));
-    console.log(tagArray);
     changePostInfo('tag', tagArray);
     const {
       target: { value },
@@ -85,9 +84,7 @@ const PostInfo: VFC<Props> = (Props) => {
       console.log('Upload failed');
     }
   }
-  useEffect(() => {
-    console.log(postInfo)
-  },[title, description, thumbnail, category, selectedTagList])
+  
   return (
     <>
       <Stack sx={{ maxWidth: 720 }}>

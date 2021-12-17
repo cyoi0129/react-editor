@@ -6,8 +6,8 @@ import { DataContext } from '../App';
 import { Grid, Fab, Typography, Box } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { postItem, postInfo } from '../features/types';
-import { getPostByID, getPostInfo, post2DB } from '../app/utils';
+import { postItem, postInfo, postContent, postMeta } from '../features/types';
+import { getPostByID, getPostInfo, post2DB, createPostObj } from '../app/utils';
 import { updatePostItem, removePostItem, addPostItem } from '../features';
 
 const Post: VFC = () => {
@@ -19,24 +19,26 @@ const Post: VFC = () => {
   const postObj: postItem = getPostByID(postID, posts);
   const postInfo: postInfo = getPostInfo(postObj);
 
-  const [postData, setPostData] = useState<postItem>(postObj);
+  // const [postData, setPostData] = useState<postItem>(postObj);
 
-  const changeContent = (data: any) => {
-    setPostData({ ...postData, content: data });
-    console.log(data);
+  const [postMeta, setPostMeta] = useState<postInfo>(postInfo);
+  const [postContent, setPostContent] = useState<postContent>(postObj.content);
+
+  const changeContent = (data: postContent) => {
+    setPostContent(data);
   }
 
   const changePostInfo = (key: string, value: string | number | number[]) => {
     if ( key === 'title' ) {
-      setPostData({ ...postData, title: value as string });
+      setPostMeta({ ...postMeta, title: value as string });
     } else if ( key === 'description') {
-      setPostData({ ...postData, description: value as string })
+      setPostMeta({ ...postMeta, description: value as string })
     } else if ( key === 'category') {
-      setPostData({ ...postData, category: value as number })
+      setPostMeta({ ...postMeta, category: value as number })
     } else if ( key === 'tag') {
-      setPostData({ ...postData, tag: value as number[] })
+      setPostMeta({ ...postMeta, tag: value as number[] })
     } else if ( key === 'thumbnail') {
-      setPostData({ ...postData, thumbnail: value as string })
+      setPostMeta({ ...postMeta, thumbnail: value as string })
     } else {
       console.log('Invailed value!')
     }
@@ -65,7 +67,8 @@ const Post: VFC = () => {
   }
 
   const saveData = () => {
-    if(postID !== '' && postID !== 'new') {
+    const postData = createPostObj(postID, postMeta, postContent);
+    if (postID !== '' && postID !== 'new') {
       dispatch(updatePostItem(postData));
     } else {
       const postDataDB = post2DB(postData).data
@@ -90,7 +93,7 @@ const Post: VFC = () => {
         <Grid item xs={12} md={6}>
           <Typography variant="h6" component="h2" sx={{ mb: 2, mx: 1 }}>Content</Typography>
           <Box sx={{ m: 1, p: 1, border: 'solid 1px #efefef', borderRadius: 2, maxHeight: 480, overflow: 'scroll' }}>
-            <Editor content={postObj.content} changeContent={changeContent} />
+            <Editor content={postContent} changeContent={changeContent} />
           </Box>
         </Grid>
       </Grid>

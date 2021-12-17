@@ -17,12 +17,14 @@ export interface postMeta {
   tag: number[]
 }
 
-export interface postData extends postMeta{
-  content: {
-    time: number,
-    blocks:[],
-    version: string
-  }
+export interface postContent {
+  time: number,
+  blocks:[],
+  version: string
+}
+
+export interface postData extends postMeta {
+  content: postContent
 }
 
 export interface postItem extends postData {

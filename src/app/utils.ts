@@ -1,4 +1,4 @@
-import { masterItem, postItem, postInfo, postData, dbPostItem } from "../features/types";
+import { masterItem, postItem, postInfo, postData, dbPostItem, postMeta, postContent } from "../features/types";
 
 // Date format process object
 export interface dateObject {
@@ -99,5 +99,10 @@ export function post2DB (post: postItem): dbPostItem {
 
 export function mapPostItem (id: string, post: postData): postItem {
   const result = Object.assign({id: id}, post);
+  return result;
+}
+
+export function createPostObj (id: string, meta: postMeta, content: postContent): postItem {
+  const result = Object.assign({content: content, id: id}, meta);
   return result;
 }
