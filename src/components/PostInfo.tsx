@@ -1,10 +1,10 @@
-import { VFC, useState, useContext, ChangeEvent } from 'react';
+import { VFC, useState, useContext, ChangeEvent, useEffect } from 'react';
 import { DataContext } from '../App';
 import { Theme, useTheme, styled, Box, TextField, FormControl, Select, MenuItem, OutlinedInput, Chip, SelectChangeEvent, Stack, IconButton, InputLabel, Typography } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { masterItem, postInfo } from '../features/types';
 import { getMasterNameByID, getMasterIDByName } from '../app/utils';
-import { uploadFile, downloadFile } from '../app/firebase';
+import { uploadFile } from '../app/firebase';
 
 export type Props = {
   postInfo: postInfo;
@@ -38,17 +38,16 @@ const PostInfo: VFC<Props> = (Props) => {
 
   // Data
   const { postInfo, changePostInfo } = Props;
-
-  const categoryList = useContext(DataContext).categories.categories;
-  const tagList = useContext(DataContext).tags.tags;
-
-  const currentID: string = postInfo.id === 0 ? 'New Post' : 'ID: ' + postInfo.id;
-
+  const categoryList = useContext(DataContext).categories;
+  const tagList = useContext(DataContext).tags;
+  const currentID: string = postInfo.id === '' ? 'New Post' : 'Post ID: ' + postInfo.id;
+  const initTagList = postInfo.id === '' ? [] : postInfo.tag.map(tagItem => getMasterNameByID(tagItem, tagList));
+  const initCategory = postInfo.id === '' ? '' : getMasterNameByID(postInfo.category, categoryList);
   const [title, setTitle] = useState<string>(postInfo.title);
   const [description, setDescription] = useState<string>(postInfo.description);
   const [thumbnail, setThumbnail] = useState<string>(postInfo.thumbnail);
-  const [category, setCategory] = useState<string>(getMasterNameByID(postInfo.category, categoryList));
-  const [selectedTagList, setSelectedTagList] = useState<string[]>(postInfo.tag.map(tagItem => getMasterNameByID(tagItem, tagList)));
+  const [category, setCategory] = useState<string>(initCategory);
+  const [selectedTagList, setSelectedTagList] = useState<string[]|[]>(initTagList);
 
   const changeTitle = (event: ChangeEvent<HTMLInputElement>) => {
     changePostInfo('title', event.target.value);
@@ -68,6 +67,7 @@ const PostInfo: VFC<Props> = (Props) => {
 
   const changeTagList = (event: SelectChangeEvent<typeof selectedTagList>) => {
     const tagArray = (event.target.value as []).map(tag => getMasterIDByName(tag, tagList));
+    console.log(tagArray);
     changePostInfo('tag', tagArray);
     const {
       target: { value },
@@ -85,7 +85,9 @@ const PostInfo: VFC<Props> = (Props) => {
       console.log('Upload failed');
     }
   }
-
+  useEffect(() => {
+    console.log(postInfo)
+  },[title, description, thumbnail, category, selectedTagList])
   return (
     <>
       <Stack sx={{ maxWidth: 720 }}>
@@ -113,7 +115,7 @@ const PostInfo: VFC<Props> = (Props) => {
             input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
             renderValue={(selected) => (
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {selected.map((value) => (
+                {(selected as string[]).map((value) => (
                   <Chip key={value} label={value} />
                 ))}
               </Box>

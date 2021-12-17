@@ -1,4 +1,4 @@
-import { masterItem, postItem, postInfo } from "../features/types";
+import { masterItem, postItem, postInfo, postData, dbPostItem } from "../features/types";
 
 // Date format process object
 export interface dateObject {
@@ -29,15 +29,15 @@ export function convertDate (date?: Date): dateObject {
   return dateResult;
 }
 
-export function calNextID (itemList: masterItem[]|postItem[]): number {
-  const idList: number[] = (itemList as Array<masterItem | postItem>).map(item => item.id);
+export function calNextID (itemList: masterItem[]): number {
+  const idList: number[] = (itemList as Array<masterItem>).map(item => item.id);
   const maxID: number = Math.max(...idList);
   return (maxID + 1);
 }
 
-export function getMasterNameByID (id: Number, list: Array<masterItem>): string {
+export function getMasterNameByID (id: Number, list: Array<masterItem>) {
   const target = list.find(item => item.id === id);
-  return target ? target.name : 'No Item';
+  return target ? target.name : '';
 }
 
 export function getMasterIDByName (name: String, list: Array<masterItem>): number {
@@ -45,10 +45,10 @@ export function getMasterIDByName (name: String, list: Array<masterItem>): numbe
   return target ? target.id : 0;
 }
 
-export function getPostByID (id: Number, list: Array<postItem>): postItem {
+export function getPostByID (id: String, list: Array<postItem>): postItem {
   const target = list.find(item => item.id === id);
   const empty: postItem = {
-    id: 0,
+    id: '',
     title: '',
     description: '',
     thumbnail: '',
@@ -75,4 +75,29 @@ export function getPostInfo (post: postItem): postInfo {
     tag: post.tag
   }
   return postInfo;
+}
+
+export function convertPost (postDB: any): postItem[] {
+  let result = [];
+  for (const [key, dbPostData] of Object.entries(postDB)) {
+    const tempPostData: postData = dbPostData as postData;
+    const tempPostID = {id: key}
+    const tempPostItem: postItem = Object.assign(tempPostID, tempPostData);
+    result.push(tempPostItem);
+  }
+  return result;
+}
+
+export function post2DB (post: postItem): dbPostItem {
+  const { id, ...rest } = post;
+  const result = {
+    target: post.id,
+    data: rest
+  }
+  return result;
+}
+
+export function mapPostItem (id: string, post: postData): postItem {
+  const result = Object.assign({id: id}, post);
+  return result;
 }

@@ -1,30 +1,40 @@
-import { useState, VFC } from 'react';
+import { useState, VFC, useEffect } from 'react';
 import { ListItem, ListItemButton, ListItemIcon, ListItemText, TextField, Grid } from '@mui/material';
-import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { masterItem } from '../features/types'
 
 export type Props = {
   data: masterItem;
+  removeMaster: any;
+  changeMaster: any;
 }
 
 const ListedItem: VFC<Props> = (Props) => {
-  const { data } = Props;
+  const { data, removeMaster, changeMaster } = Props;
   const [ name, setName ] = useState<string>(data.name);
-  const changeName = () => {
-    setName('Changed');
+  const [ id, setId ] = useState<number>(data.id);
+  const removeItem = () => {
+    removeMaster(id);
   }
+  const changeItem = (value: string) => {
+    setName(value);
+    changeMaster({id: id, name: value});
+  }
+  useEffect(() => {
+    setId(data.id);
+    setName(data.name);
+  }, [data]);
   return (
     <ListItem>
       <Grid container spacing={0}>
         <Grid item xs={1}>
-          <ListItemText sx={{pt:1}} primary={data.id} />
+          <ListItemText sx={{pt:1}} primary={id} />
         </Grid>
         <Grid item xs={10}>
-          <TextField sx={{width:'90%', maxWidth: 640, mx:'5%'}} value={name} variant="outlined" onChange={changeName} />
+          <TextField sx={{width:'90%', maxWidth: 640, mx:'5%'}} value={name} variant="outlined" onChange={(event) => changeItem(event.target.value)} />
         </Grid>
         <Grid item xs={1}>
-          <ListItemButton sx={{mt:1}}><ListItemIcon><DeleteIcon color="error" /></ListItemIcon></ListItemButton>
+          <ListItemButton sx={{mt:1}}><ListItemIcon><DeleteIcon color="error" onClick={removeItem} /></ListItemIcon></ListItemButton>
         </Grid>
       </Grid>
     </ListItem>

@@ -1,12 +1,14 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import categoryReducer from '../features/Category';
-import tagReducer from '../features/Tag';
+import masterReducer from '../features/Master';
+// import categoryReducer from '../features/Category';
+// import tagReducer from '../features/Tag';
 import postReducer from '../features/Post';
 
 export const store = configureStore({
   reducer: {
-    categories: categoryReducer,
-    tags: tagReducer,
+    // categories: categoryReducer,
+    // tags: tagReducer,
+    masters: masterReducer,
     posts: postReducer,
   },
 });

@@ -11,12 +11,12 @@ import LabelIcon from '@mui/icons-material/Label';
 const menuItem = [
   {
     name: 'Category',
-    link: 'category',
+    link: 'master/category',
     icon: <CategoryIcon />
   },
   {
     name: 'Tag',
-    link: 'tag',
+    link: 'master/tag',
     icon: <LabelIcon />
   }
 ];

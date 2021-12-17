@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
-import { masterItem, postList } from './types';
-import basicData from '../data.json';
-import { fetchData } from '../app/firebase';
+import { postList, postItem, postData, dbPostItem } from './types';
+import { convertPost, post2DB, mapPostItem } from '../app/utils';
+import { fetchData, updatePost, removePost, addPost } from '../app/firebase';
 
 const initialState: postList = {
   posts: []
@@ -10,47 +10,35 @@ const initialState: postList = {
 
 export const getPostList = createAsyncThunk(
   'post/getPostList',
-    async () => {
-      const response = await fetchData('post');
-      return response;
-    }
-);
-
-export const addPost = createAsyncThunk(
-  'post/addPost',
-  async (newCateogry: string) => {
-    const response = await fetch( basicData.env.local + '/post/', {
-      method: 'POST',
-      credentials: 'include',
-      body: JSON.stringify(newCateogry),
-      headers: new Headers({ 'Content-type': 'application/json', 'X-CSRFToken': '' })
-    }).then((res) => res.json());
+  async () => {
+    const response = await fetchData('posts');
     return response;
   }
 );
 
-export const updatePost = createAsyncThunk(
-  'post/updatePost',
-  async (targetPost: masterItem) => {
-    const response = await fetch( basicData.env.local + '/post/' + String(targetPost.id) + '/' , {
-      method: 'PUT',
-      credentials: 'include',
-      body: JSON.stringify(targetPost),
-      headers: new Headers({ 'Content-type': 'application/json', 'X-CSRFToken': '' })
-    }).then((res) => res.json());
-    return response;
+export const updatePostItem = createAsyncThunk(
+  'post/updatePostItem',
+  async (post: postItem) => {
+    const postData: dbPostItem = post2DB(post);
+    const response = await updatePost(postData);
+    const result = mapPostItem(post.id, response);
+    return result;
   }
 );
 
-export const removePost = createAsyncThunk(
-  'post/removePost',
-  async (targetPost: masterItem) => {
-    const response = await fetch( basicData.env.local + '/post/' + String(targetPost.id) + '/' , {
-      method: 'DELETE',
-      credentials: 'include',
-      body: JSON.stringify(targetPost),
-      headers: new Headers({ 'Content-type': 'application/json', 'X-CSRFToken': '' })
-    }).then((res) => res.json());
+export const addPostItem = createAsyncThunk(
+  'post/addPostItem',
+  async (post: postData) => {
+    const response = await addPost(post);
+    const result = mapPostItem(response.id as string, response.data);
+    return result;
+  }
+);
+
+export const removePostItem = createAsyncThunk(
+  'post/removePostItem',
+  async (targetPostID: string) => {
+    const response = await removePost(targetPostID);
     return response;
   }
 );
@@ -61,17 +49,18 @@ const postSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getPostList.fulfilled, (state, action) => {
-      state.posts = action.payload;
+      const result = convertPost(action.payload);
+      state.posts = result;
     });
-    builder.addCase(addPost.fulfilled, (state, action) => {
-      state.posts = [...state.posts, action.payload];
-    });
-    builder.addCase(updatePost.fulfilled, (state, action) => {
+    builder.addCase(updatePostItem.fulfilled, (state, action) => {
       state.posts = state.posts.filter(post => post.id !== action.payload.id);
       state.posts = [...state.posts, action.payload];
     });
-    builder.addCase(removePost.fulfilled, (state, action) => {
-      state.posts = state.posts.filter(post => post.id !== action.payload.id);
+    builder.addCase(addPostItem.fulfilled, (state, action) => {
+      state.posts = [...state.posts, action.payload];
+    });
+    builder.addCase(removePostItem.fulfilled, (state, action) => {
+      state.posts = state.posts.filter(post => post.id !== action.payload);
     });
     // Error Block
     builder.addCase(getPostList.pending, () => {
@@ -80,22 +69,22 @@ const postSlice = createSlice({
     builder.addCase(getPostList.rejected, () => {
       // Error process
     });
-    builder.addCase(addPost.pending, () => {
+    builder.addCase(addPostItem.pending, () => {
       // Error process
     });
-    builder.addCase(addPost.rejected, () => {
+    builder.addCase(addPostItem.rejected, () => {
       // Error process
     });
-    builder.addCase(updatePost.pending, () => {
+    builder.addCase(updatePostItem.pending, () => {
       // Error process
     });
-    builder.addCase(updatePost.rejected, () => {
+    builder.addCase(updatePostItem.rejected, () => {
       // Error process
     });
-    builder.addCase(removePost.pending, () => {
+    builder.addCase(removePostItem.pending, () => {
       // Error process
     });
-    builder.addCase(removePost.rejected, () => {
+    builder.addCase(removePostItem.rejected, () => {
       // Error process
     });
   }
@@ -105,6 +94,6 @@ export default postSlice.reducer;
 export const selectPost = (state: RootState) => state.posts;
 export const selectPostByID = createSelector(
   (state: RootState) => state.posts,
-  (state: RootState, postID: number) => postID,
+  (state: RootState, postID: string) => postID,
   (posts, postID) => posts.posts.find(post => post.id === postID),
 )

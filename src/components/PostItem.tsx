@@ -12,7 +12,7 @@ export type Props = {
 
 const PostItem: VFC<Props> = (Props) =>{
   const { data } = Props;
-  const cateogries = useContext(DataContext).categories.categories;
+  const cateogries = useContext(DataContext).categories;
 
   return (
     <Link to={`/post/${String(data.id)}`}>

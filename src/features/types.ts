@@ -3,8 +3,12 @@ export interface masterItem {
   name: string
 }
 
-export interface postInfo {
-  id: number
+export interface masterList {
+  categories: masterItem[] | [],
+  tags: masterItem[] | []
+}
+
+export interface postMeta {
   title: string,
   description: string,
   thumbnail: string,
@@ -13,7 +17,7 @@ export interface postInfo {
   tag: number[]
 }
 
-export interface postItem extends postInfo {
+export interface postData extends postMeta{
   content: {
     time: number,
     blocks:[],
@@ -21,14 +25,19 @@ export interface postItem extends postInfo {
   }
 }
 
-export interface categoryList {
-  categories: masterItem[] | []
+export interface postItem extends postData {
+  id: string
 }
 
-export interface tagList {
-  tags: masterItem[] | []
+export interface postInfo extends postMeta {
+  id: string
 }
 
 export interface postList {
   posts: postItem[] | []
+}
+
+export interface dbPostItem {
+  target: string,
+  data: postData
 }
