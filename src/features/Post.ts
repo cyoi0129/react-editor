@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
-import { postList, postItem, postData, dbPostItem } from './types';
+import { postList, postItem, postData, dbPostItem } from '../app/types';
 import { convertPost, post2DB, mapPostItem } from '../app/utils';
 import { fetchData, updatePost, removePost, addPost } from '../app/firebase';
 

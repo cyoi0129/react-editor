@@ -1,6 +1,7 @@
 import { VFC } from 'react';
 import { Box, Typography } from '@mui/material';
-import { dateObject, convertDate } from '../app/utils';
+import { convertDate } from '../app/utils';
+import { dateObject } from '../app/types'
 
 const Footer: VFC = () => {
   const year: string = convertDate(new Date()).yearString;

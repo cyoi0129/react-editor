@@ -1,14 +1,30 @@
-import { VFC, MouseEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem, List, ListItem, ListItemIcon, ListItemText, Drawer } from '@mui/material';
+import { VFC, useState, useContext, useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { userLogout } from '../features';
+import { Link, useNavigate } from 'react-router-dom';
+import { DataContext } from '../App';
+import { AppBar, Box, Toolbar, IconButton, Typography, Container, Button, Tooltip, List, ListItem, ListItemIcon, ListItemText, Drawer } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import CategoryIcon from '@mui/icons-material/Category';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import LabelIcon from '@mui/icons-material/Label';
+import HomeIcon from '@mui/icons-material/Home';
+import PersonIcon from '@mui/icons-material/Person';
 
 const menuItem = [
+  {
+    name: 'Home',
+    link: '',
+    icon: <HomeIcon />
+  },
+  {
+    name: 'Posts',
+    link: 'posts',
+    icon: <ListAltIcon />
+  },
   {
     name: 'Category',
     link: 'master/category',
@@ -18,16 +34,33 @@ const menuItem = [
     name: 'Tag',
     link: 'master/tag',
     icon: <LabelIcon />
-  }
+  },
+  {
+    name: 'Account',
+    link: 'user',
+    icon: <PersonIcon />
+  },
 ];
 
 const Header: VFC = () => {
+  const userLoginStatus: boolean = useContext(DataContext).user;
+  const dispatch = useAppDispatch();
   const [menu, setMenu] = useState<boolean>(false);
-  const [login, setLogin] = useState<boolean>(false);
-
+  const [login, setLogin] = useState<boolean>(userLoginStatus);
+  const navigate = useNavigate();
   const toggleMenu = () => {
     setMenu(!menu);
   }
+
+  const changeLoginStatus = () => {
+    if(login) {
+      setLogin(false);
+      dispatch(userLogout);
+    } else {
+      navigate('user');
+    }
+  }
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl" sx={{ pl: 1 }}>
@@ -83,10 +116,10 @@ const Header: VFC = () => {
 
           {/* Right Menu */}
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton sx={{ p: 0 }}>
-                {login? <LockOpenIcon sx={{ color: 'white' }} />
-                : <ExitToAppIcon sx={{color:'white'}} />}
+            <Tooltip title="Account">
+              <IconButton sx={{ p: 0 }} onClick={changeLoginStatus}>
+                {login? <ExitToAppIcon sx={{color:'white'}} />
+                : <LockOpenIcon sx={{ color: 'white' }} />}
               </IconButton>
             </Tooltip>
           </Box>

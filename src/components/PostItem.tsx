@@ -2,7 +2,7 @@ import { VFC, useContext } from 'react';
 import { DataContext } from '../App';
 import { Link } from 'react-router-dom';
 import { ListItem, ListItemText, ListItemAvatar, Avatar, Typography } from '@mui/material';
-import { postItem } from '../features/types';
+import { postItem } from '../app/types';
 import { getMasterNameByID } from '../app/utils';
 
 

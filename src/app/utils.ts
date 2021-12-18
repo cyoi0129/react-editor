@@ -1,17 +1,4 @@
-import { masterItem, postItem, postInfo, postData, dbPostItem, postMeta, postContent } from "../features/types";
-
-// Date format process object
-export interface dateObject {
-  dateOrigin: Date,
-  dateString: string,
-  dateNumbner: number,
-  yearString: string,
-  monthString: string,
-  dayString: string,
-  yearNumbner: number,
-  monthNumbner: number,
-  dayNumbner: number,
-}
+import { masterItem, postItem, postInfo, postData, dbPostItem, postMeta, postContent, dateObject } from "./types";
 
 export function convertDate (date?: Date): dateObject {
   const newDate = date ? date : new Date();

@@ -2,7 +2,7 @@ import { VFC, useState, useContext, ChangeEvent, useEffect } from 'react';
 import { DataContext } from '../App';
 import { Theme, useTheme, styled, Box, TextField, FormControl, Select, MenuItem, OutlinedInput, Chip, SelectChangeEvent, Stack, IconButton, InputLabel, Typography } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { masterItem, postInfo } from '../features/types';
+import { masterItem, postInfo } from '../app/types';
 import { getMasterNameByID, getMasterIDByName } from '../app/utils';
 import { uploadFile } from '../app/firebase';
 

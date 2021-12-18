@@ -6,7 +6,7 @@ import { Typography, List, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import { DataContext } from '../App';
-import { masterItem } from '../features/types';
+import { masterItem } from '../app/types';
 import { calNextID } from '../app/utils';
 import { updateMasterList } from '../features';
 

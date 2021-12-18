@@ -1,12 +1,12 @@
 import { firebaseConfig } from './config';
-import { postItem, masterItem, postData, dbPostItem } from '../features/types'
+import { postItem, masterItem, postData, dbPostItem, userStatus } from './types'
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
 import 'firebase/compat/storage';
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
-export const auth = firebase.auth(firebaseApp);
+const auth = firebase.auth(firebaseApp);
 const database = firebase.database(firebaseApp);
 const dbRef = database.ref();
 const storage = firebase.storage(firebaseApp);
@@ -72,4 +72,17 @@ export const addPost = async (post: postData) => {
     id: key,
     data: result
   }
+}
+export const userAuth = async (user: userStatus) => {
+auth.signInWithEmailAndPassword(user.email, user.password)
+  .then((userCredential) => {
+    // Signed in
+    const userResponse = userCredential.user;
+    console.log(userResponse);
+    // ...
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+  });
 }

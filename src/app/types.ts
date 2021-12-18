@@ -43,3 +43,21 @@ export interface dbPostItem {
   target: string,
   data: postData
 }
+
+export interface dateObject {
+  dateOrigin: Date,
+  dateString: string,
+  dateNumbner: number,
+  yearString: string,
+  monthString: string,
+  dayString: string,
+  yearNumbner: number,
+  monthNumbner: number,
+  dayNumbner: number,
+}
+
+export interface userStatus {
+  isLogined: boolean,
+  email: string,
+  password: string
+}

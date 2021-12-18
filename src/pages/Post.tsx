@@ -6,7 +6,7 @@ import { DataContext } from '../App';
 import { Grid, Fab, Typography, Box } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { postItem, postInfo, postContent, postMeta } from '../features/types';
+import { postItem, postInfo, postContent, postMeta } from '../app/types';
 import { getPostByID, getPostInfo, post2DB, createPostObj } from '../app/utils';
 import { updatePostItem, removePostItem, addPostItem } from '../features';
 
@@ -68,6 +68,7 @@ const Post: VFC = () => {
 
   const saveData = () => {
     const postData = createPostObj(postID, postMeta, postContent);
+    console.log(postData);
     if (postID !== '' && postID !== 'new') {
       dispatch(updatePostItem(postData));
     } else {

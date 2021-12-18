@@ -7,3 +7,9 @@ export { getPostList as getPostList } from "./Post";
 export { updatePostItem as updatePostItem } from "./Post";
 export { addPostItem as addPostItem } from "./Post";
 export { removePostItem as removePostItem } from "./Post";
+
+export { selectUser as selectUser } from "./User";
+export { userLogin as userLogin } from "./User";
+export { userUpdate as userUpdate } from "./User";
+export { updateLogin as updateLogin } from "./User";
+export { userLogout as userLogout } from "./User";

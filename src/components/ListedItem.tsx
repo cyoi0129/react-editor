@@ -1,7 +1,7 @@
 import { useState, VFC, useEffect } from 'react';
 import { ListItem, ListItemButton, ListItemIcon, ListItemText, TextField, Grid } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { masterItem } from '../features/types'
+import { masterItem } from '../app/types'
 
 export type Props = {
   data: masterItem;
