@@ -1,18 +1,24 @@
-import { VFC, useContext, useState } from 'react';
+import { VFC, useContext, useState, useEffect } from 'react';
 import { useAppDispatch } from '../app/hooks';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Avatar, Button, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
 // import Link from '@mui/material/Link';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Loading, Notice } from './';
 import { userLogin } from '../features/User'
 import { userStatus } from '../app/types';
 import { DataContext } from '../App';
 
 const Login: VFC = () => {
+  const navigate = useNavigate();
   const userLoginStatus: boolean = useContext(DataContext).user;
-  const [login, setLogin] = useState<boolean>(userLoginStatus)
+  const [login, setLogin] = useState<boolean>(userLoginStatus);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loaded, setLoaded] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
@@ -21,13 +27,17 @@ const Login: VFC = () => {
       email: data.get('email') as string,
       password: data.get('password') as string,
     }
-
     dispatch(userLogin(loginInfo));
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    setTimeout(() => {
+      setLoaded(true);
+    }, 500);
+    setTimeout(() => {
+      setLoading(false);
+      navigate('/');
+    }, 2000);
   };
+
+  useEffect(()=>{setLogin(userLoginStatus)},[userLoginStatus]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -55,6 +65,8 @@ const Login: VFC = () => {
           </Box>
         </Box>
       }
+      <Loading show={loading} />
+      <Notice show={loaded} message="Save successed!" type="success" />
     </Container>
   );
 }

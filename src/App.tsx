@@ -20,18 +20,21 @@ export const DataContext = createContext({} as {
 
 const App: VFC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const postListData = useAppSelector(selectPost);
   const categoryListData = useAppSelector(selectMaster).categories;
   const tagListData = useAppSelector(selectMaster).tags;
   const userLoginStatus = useAppSelector(selectUser).isLogined;
   const isCookieLogined: boolean = Cookies.get('isLogined') === '1' ? true : false;
   useEffect(() => {
-    dispatch(getPostList());
-    dispatch(getMasterList());
     if (isCookieLogined) {
       dispatch(updateLogin());
+      dispatch(getPostList());
+      dispatch(getMasterList());
+    } else {
+      navigate('/user/');
     }
-  }, [dispatch]);
+  }, [dispatch, isCookieLogined]);
   return (
     <>
       <DataContext.Provider value={{ posts: postListData, categories: categoryListData, tags: tagListData, user: userLoginStatus }}>

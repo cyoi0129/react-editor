@@ -60,7 +60,7 @@ const Header: VFC = () => {
       navigate('user');
     }
   }
-
+  useEffect(()=>{setLogin(userLoginStatus)},[userLoginStatus]);
   return (
     <AppBar position="static">
       <Container maxWidth="xl" sx={{ pl: 1 }}>
@@ -116,7 +116,7 @@ const Header: VFC = () => {
 
           {/* Right Menu */}
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Account">
+            <Tooltip title={login?'Logout':'Login'}>
               <IconButton sx={{ p: 0 }} onClick={changeLoginStatus}>
                 {login? <ExitToAppIcon sx={{color:'white'}} />
                 : <LockOpenIcon sx={{ color: 'white' }} />}

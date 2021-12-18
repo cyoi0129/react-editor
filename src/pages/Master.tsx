@@ -1,7 +1,7 @@
 import { VFC, useContext, useState, useEffect } from 'react';
 import { useAppDispatch } from '../app/hooks';
 import { useParams } from 'react-router-dom';
-import { ListedItem } from '../components'
+import { ListedItem, Loading, Notice } from '../components'
 import { Typography, List, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
@@ -16,6 +16,8 @@ const Category: VFC = () => {
     const dispatch = useAppDispatch();
     const masterList = type === 'category' ? data.categories : data.tags;
     const [masters, setMasters] = useState<masterItem[]>(masterList);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [loaded, setLoaded] = useState<boolean>(false);
 
     const addMaster = () => {
         const nextID: number = calNextID(masters);
@@ -40,15 +42,23 @@ const Category: VFC = () => {
     }
 
     const saveData = () => {
+        setLoading(true);
         const updateTarget = {
             target: type === 'category' ? 'categories' : 'tags',
             data: masters
         }
         dispatch(updateMasterList(updateTarget));
+        setTimeout(() => {
+            setLoaded(true);
+        }, 500);
+        setTimeout(() => {
+            setLoading(false);
+        }, 2000);
     }
     useEffect(() => {
         setMasters(masterList);
     }, [type]);
+
     return (
         <>
             <Typography variant="h4" component="h1">{type}</Typography>
@@ -63,6 +73,8 @@ const Category: VFC = () => {
             <Fab color="primary" aria-label="save" sx={{ backgroundColor: '#d32f2f', color: '#fff', position: 'fixed', right: 16, bottom: 16, zIndex: 2 }} onClick={saveData}>
                 <SaveIcon />
             </Fab>
+            <Loading show={loading} />
+            <Notice show={loaded} message="Save successed!" type="success" />
         </>
     )
 }
