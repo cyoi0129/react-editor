@@ -87,8 +87,21 @@ export const userAuth = async (user: userLoginData) => {
   return result;
 }
 
-export const fetchUserData = () => {
+export const fetchUserData = async () => {
+  const initFirebaseAuth = () => {
+    return new Promise((resolve) => {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        resolve(user);
+        unsubscribe();
+      });
+    });
+  };
+  const user = await initFirebaseAuth();
+  if (user) {
+    console.log(user);
+  }
   const userData = auth.currentUser;
+  console.log(userData);
   const result: userInfoData = {
     displayName: userData?.displayName,
     email: userData?.email,
@@ -99,3 +112,6 @@ export const fetchUserData = () => {
   }
   return result;
 }
+
+
+
