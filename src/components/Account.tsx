@@ -6,13 +6,14 @@ import { Avatar, Button, TextField, FormControlLabel, Checkbox, Grid, Box, Typog
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Loading, Notice } from './';
 import { userLogin } from '../features/User'
-import { userStatus } from '../app/types';
+import { userInfoData, userLoginData, userStatus } from '../app/types';
 import { DataContext } from '../App';
 
 const Login: VFC = () => {
   const navigate = useNavigate();
-  const userLoginStatus: boolean = useContext(DataContext).user;
-  const [login, setLogin] = useState<boolean>(userLoginStatus);
+  const userStatus: userStatus = useContext(DataContext).user;
+  const [userInfo, setUserInfo] = useState<userInfoData>(userStatus.userInfo);
+  const [login, setLogin] = useState<boolean>(userStatus.isLogined);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
 
@@ -22,8 +23,7 @@ const Login: VFC = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    const loginInfo: userStatus = {
-      isLogined: true,
+    const loginInfo: userLoginData = {
       email: data.get('email') as string,
       password: data.get('password') as string,
     }
@@ -37,12 +37,21 @@ const Login: VFC = () => {
     }, 2000);
   };
 
-  useEffect(()=>{setLogin(userLoginStatus)},[userLoginStatus]);
+  useEffect(() => { 
+    setLogin(userStatus.isLogined);
+    setUserInfo(userStatus.userInfo);
+   }, [userStatus]);
 
   return (
     <Container component="main" maxWidth="xs">
-      {userLoginStatus ?
-        <Typography component="h1" variant="h5">Welcome! You've logined!</Typography>
+      {login ?
+        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Typography component="h1" variant="h5">Welcome! You've logined!</Typography>
+          <Avatar alt={userInfo.displayName as string} src={userInfo.photoURL as string} />
+          <Typography component="h3" variant="h6">UID: {userInfo.uid}</Typography>
+          <Typography component="h3" variant="h6">Name: {userInfo.displayName}</Typography>
+          <Typography component="h3" variant="h6">Email: {userInfo.email}</Typography>
+        </Box>
         :
         <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>

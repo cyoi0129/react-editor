@@ -6,8 +6,8 @@ import Cookies from 'js-cookie';
 import { Home, PostList, Post, Master, User } from './pages';
 import { Editor, ScrollToTop, Header, Footer } from './components';
 
-import { selectPost, getPostList, getMasterList, selectMaster, updateLogin, selectUser } from './features';
-import { postList, masterItem } from './app/types'
+import { selectPost, getPostList, getMasterList, selectMaster, getUserData, selectUser } from './features';
+import { postList, masterItem, userStatus } from './app/types'
 
 import { Container } from '@mui/material';
 
@@ -15,7 +15,7 @@ export const DataContext = createContext({} as {
   posts: postList,
   categories: masterItem[],
   tags: masterItem[],
-  user: boolean
+  user: userStatus
 })
 
 const App: VFC = () => {
@@ -24,11 +24,11 @@ const App: VFC = () => {
   const postListData = useAppSelector(selectPost);
   const categoryListData = useAppSelector(selectMaster).categories;
   const tagListData = useAppSelector(selectMaster).tags;
-  const userLoginStatus = useAppSelector(selectUser).isLogined;
+  const userStatus = useAppSelector(selectUser);
   const isCookieLogined: boolean = Cookies.get('isLogined') === '1' ? true : false;
   useEffect(() => {
     if (isCookieLogined) {
-      dispatch(updateLogin());
+      dispatch(getUserData());
       dispatch(getPostList());
       dispatch(getMasterList());
     } else {
@@ -37,7 +37,7 @@ const App: VFC = () => {
   }, [dispatch, isCookieLogined]);
   return (
     <>
-      <DataContext.Provider value={{ posts: postListData, categories: categoryListData, tags: tagListData, user: userLoginStatus }}>
+      <DataContext.Provider value={{ posts: postListData, categories: categoryListData, tags: tagListData, user: userStatus }}>
         <ScrollToTop />
         <Header />
         <Container className="App-Container">

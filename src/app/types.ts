@@ -56,8 +56,22 @@ export interface dateObject {
   dayNumbner: number,
 }
 
-export interface userStatus {
-  isLogined: boolean,
+export interface userLoginData {
   email: string,
   password: string
+}
+
+export interface userInfoData {
+  displayName: string|null|undefined,
+  email: string|null|undefined,
+  uid: string|null|undefined,
+  refreshToken: string|null|undefined,
+  phoneNumber: string|null|undefined,
+  photoURL: string|null|undefined
+}
+
+export interface userStatus {
+  isLogined: boolean,
+  userLogin: userLoginData,
+  userInfo: userInfoData
 }

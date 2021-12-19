@@ -43,7 +43,7 @@ const menuItem = [
 ];
 
 const Header: VFC = () => {
-  const userLoginStatus: boolean = useContext(DataContext).user;
+  const userLoginStatus: boolean = useContext(DataContext).user.isLogined;
   const dispatch = useAppDispatch();
   const [menu, setMenu] = useState<boolean>(false);
   const [login, setLogin] = useState<boolean>(userLoginStatus);

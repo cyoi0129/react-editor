@@ -1,5 +1,5 @@
 import { firebaseConfig } from './config';
-import { postItem, masterItem, postData, dbPostItem, userStatus } from './types'
+import { postItem, masterItem, postData, dbPostItem, userStatus, userLoginData, userInfoData } from './types'
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
@@ -39,7 +39,7 @@ export const fetchData = async (target: string) => {
   return data;
 }
 
-export const updateMaster = async (target: string, data: any) => {  
+export const updateMaster = async (target: string, data: any) => {
   const postRef = await dbRef.child('react-editor/masters/' + target).set(data);
   const dataRef = await dbRef.child('react-editor/masters/' + target).get();
   const result = await dataRef.val();
@@ -73,16 +73,29 @@ export const addPost = async (post: postData) => {
     data: result
   }
 }
-export const userAuth = async (user: userStatus) => {
-auth.signInWithEmailAndPassword(user.email, user.password)
-  .then((userCredential) => {
-    // Signed in
-    const userResponse = userCredential.user;
-    console.log(userResponse);
-    // ...
-  })
-  .catch((error) => {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-  });
+export const userAuth = async (user: userLoginData) => {
+  const userLogin = await auth.signInWithEmailAndPassword(user.email, user.password);
+  const userData = userLogin.user;
+  const result: userInfoData = {
+    displayName: userData?.displayName,
+    email: userData?.email,
+    uid: userData?.uid,
+    refreshToken: userData?.refreshToken,
+    phoneNumber: userData?.phoneNumber,
+    photoURL: userData?.photoURL
+  }
+  return result;
+}
+
+export const fetchUserData = () => {
+  const userData = auth.currentUser;
+  const result: userInfoData = {
+    displayName: userData?.displayName,
+    email: userData?.email,
+    uid: userData?.uid,
+    refreshToken: userData?.refreshToken,
+    phoneNumber: userData?.phoneNumber,
+    photoURL: userData?.photoURL
+  }
+  return result;
 }

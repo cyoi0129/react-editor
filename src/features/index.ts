@@ -10,6 +10,5 @@ export { removePostItem as removePostItem } from "./Post";
 
 export { selectUser as selectUser } from "./User";
 export { userLogin as userLogin } from "./User";
-export { userUpdate as userUpdate } from "./User";
-export { updateLogin as updateLogin } from "./User";
+export { getUserData as getUserData } from "./User";
 export { userLogout as userLogout } from "./User";

@@ -1,27 +1,37 @@
 import { createAsyncThunk, createSlice, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
-import { userStatus } from '../app/types';
-import { userAuth } from '../app/firebase';
+import { userLoginData, userStatus } from '../app/types';
+import { userAuth, fetchUserData } from '../app/firebase';
 import Cookies from 'js-cookie';
 
 const initialState: userStatus = {
     isLogined: false,
-    email: '',
-    password: ''
+    userLogin: {
+        email: '',
+        password: ''
+    },
+    userInfo: {
+        displayName: null,
+        email: null,
+        uid: null,
+        refreshToken: null,
+        phoneNumber: null,
+        photoURL: null
+    }
 }
 
 export const userLogin = createAsyncThunk(
     'user/userLogin',
-    async (user: userStatus) => {
+    async (user: userLoginData) => {
         const response = await userAuth(user);
-        return user;
+        return response;
     }
 );
 
-export const userUpdate = createAsyncThunk(
-    'user/userUpdate',
-    async (user: userStatus) => {
-        const response = await userAuth(user);
+export const getUserData = createAsyncThunk(
+    'user/getUserData',
+    async () => {
+        const response = await fetchUserData();
         return response;
     }
 );
@@ -30,25 +40,30 @@ const userSlice = createSlice({
     name: 'user',
     initialState: initialState,
     reducers: {
-        updateLogin: (state) => {
-            state.isLogined = true;
-        },
         userLogout: (state) => {
             state.isLogined = false;
+            state.userInfo = {
+                displayName: null,
+                email: null,
+                uid: null,
+                refreshToken: null,
+                phoneNumber: null,
+                photoURL: null
+            }
             Cookies.set('isLogined', '0');
         },
     },
     extraReducers: (builder) => {
         builder.addCase(userLogin.fulfilled, (state, action) => {
             state.isLogined = true;
+            state.userLogin.email = '';
+            state.userLogin.password = '';
+            state.userInfo = action.payload;
             Cookies.set('isLogined', '1', { expires: 90 });
         });
-        builder.addCase(userUpdate.fulfilled, (state, action) => {
-            // if (action.payload.target === 'users/categories') {
-            //     state.categories = action.payload.data;
-            // } else {
-            //     state.tags = action.payload.data;
-            // }
+        builder.addCase(getUserData.fulfilled, (state, action) => {
+            state.isLogined = true;
+            state.userInfo = action.payload;
         });
         // Error Block
         builder.addCase(userLogin.pending, () => {
@@ -57,15 +72,15 @@ const userSlice = createSlice({
         builder.addCase(userLogin.rejected, () => {
             // Error process
         });
-        builder.addCase(userUpdate.pending, () => {
+        builder.addCase(getUserData.pending, () => {
             // Error process
         });
-        builder.addCase(userUpdate.rejected, () => {
+        builder.addCase(getUserData.rejected, () => {
             // Error process
         });
     }
 });
 
 export default userSlice.reducer;
-export const { updateLogin, userLogout } = userSlice.actions;
+export const { userLogout } = userSlice.actions;
 export const selectUser = (state: RootState) => state.user;
