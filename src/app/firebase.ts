@@ -81,7 +81,6 @@ export const userAuth = async (user: userLoginData) => {
     email: userData?.email,
     uid: userData?.uid,
     refreshToken: userData?.refreshToken,
-    phoneNumber: userData?.phoneNumber,
     photoURL: userData?.photoURL
   }
   return result;
@@ -101,17 +100,77 @@ export const fetchUserData = async () => {
     console.log(user);
   }
   const userData = auth.currentUser;
-  console.log(userData);
   const result: userInfoData = {
     displayName: userData?.displayName,
     email: userData?.email,
     uid: userData?.uid,
     refreshToken: userData?.refreshToken,
-    phoneNumber: userData?.phoneNumber,
     photoURL: userData?.photoURL
   }
   return result;
 }
 
+export const updateUserData = async (displayName: string, photoURL: string) => {
+  let updateResult: boolean = false;
+  const initFirebaseAuth = () => {
+    return new Promise((resolve) => {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        resolve(user);
+        unsubscribe();
+      });
+    });
+  };
+  const user = await initFirebaseAuth();
+  if (user) {
+    console.log(user);
+  }
+  const userData = auth.currentUser;
+  (userData as firebase.User).updateProfile({
+    displayName: displayName,
+    photoURL: photoURL
+  }).then(() => {
+    updateResult = true;
+    console.log('Update successed!');
+  }).catch((error) => {
+    console.log(error);
+  });
 
+  const result: userInfoData = updateResult ?
+  {
+    displayName: displayName,
+    email: userData?.email,
+    uid: userData?.uid,
+    refreshToken: userData?.refreshToken,
+    photoURL: photoURL
+  }
+  :
+  {
+    displayName: userData?.displayName,
+    email: userData?.email,
+    uid: userData?.uid,
+    refreshToken: userData?.refreshToken,
+    photoURL: userData?.photoURL
+  }
+  return result;
+}
 
+export const removeUserLogin = async () => {
+  const initFirebaseAuth = () => {
+    return new Promise((resolve) => {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        resolve(user);
+        unsubscribe();
+      });
+    });
+  };
+  const user = await initFirebaseAuth();
+  if (user) {
+    console.log(user);
+  }
+  auth.signOut().then(()=>{
+    console.log('Logout successed');
+  })
+  .catch( (error)=>{
+    console.log(`Logout error (${error})`);
+  });
+}

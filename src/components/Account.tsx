@@ -45,10 +45,10 @@ const Login: VFC = () => {
   return (
     <Container component="main" maxWidth="xs">
       {login ?
-        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column' }}>
           <Typography component="h1" variant="h5">Welcome! You've logined!</Typography>
           <Avatar alt={userInfo.displayName as string} src={userInfo.photoURL as string} />
-          <Typography component="h3" variant="h6">UID: {userInfo.uid}</Typography>
+          <Typography component="h3" variant="h6">ID: {userInfo.uid}</Typography>
           <Typography component="h3" variant="h6">Name: {userInfo.displayName}</Typography>
           <Typography component="h3" variant="h6">Email: {userInfo.email}</Typography>
         </Box>

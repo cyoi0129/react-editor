@@ -15,7 +15,6 @@ const initialState: userStatus = {
         email: null,
         uid: null,
         refreshToken: null,
-        phoneNumber: null,
         photoURL: null
     }
 }
@@ -47,7 +46,6 @@ const userSlice = createSlice({
                 email: null,
                 uid: null,
                 refreshToken: null,
-                phoneNumber: null,
                 photoURL: null
             }
             Cookies.set('isLogined', '0');

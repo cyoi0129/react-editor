@@ -66,7 +66,6 @@ export interface userInfoData {
   email: string|null|undefined,
   uid: string|null|undefined,
   refreshToken: string|null|undefined,
-  phoneNumber: string|null|undefined,
   photoURL: string|null|undefined
 }
 
