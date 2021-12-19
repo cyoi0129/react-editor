@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
-import { userLoginData, userStatus } from '../app/types';
-import { userAuth, fetchUserData } from '../app/firebase';
+import { userLoginData, userStatus, userUpdateData } from '../app/types';
+import { userAuth, fetchUserData, updateUserData, removeUserLogin } from '../app/firebase';
 import Cookies from 'js-cookie';
 
 const initialState: userStatus = {
@@ -35,21 +35,37 @@ export const getUserData = createAsyncThunk(
     }
 );
 
+export const updateUserInfo = createAsyncThunk(
+    'user/updateUserInfo',
+    async (newUserInfo: userUpdateData) => {
+        const response = await updateUserData(newUserInfo.displayName, newUserInfo.photoURL);
+        return response;
+    }
+);
+
+export const userLogout = createAsyncThunk(
+    'user/userLogout',
+    async () => {
+        const response = await removeUserLogin();
+        return response;
+    }
+);
+
 const userSlice = createSlice({
     name: 'user',
     initialState: initialState,
     reducers: {
-        userLogout: (state) => {
-            state.isLogined = false;
-            state.userInfo = {
-                displayName: null,
-                email: null,
-                uid: null,
-                refreshToken: null,
-                photoURL: null
-            }
-            Cookies.set('isLogined', '0');
-        },
+        // userLogout: (state) => {
+        //     state.isLogined = false;
+        //     state.userInfo = {
+        //         displayName: null,
+        //         email: null,
+        //         uid: null,
+        //         refreshToken: null,
+        //         photoURL: null
+        //     }
+        //     Cookies.set('isLogined', '0');
+        // },
     },
     extraReducers: (builder) => {
         builder.addCase(userLogin.fulfilled, (state, action) => {
@@ -62,6 +78,20 @@ const userSlice = createSlice({
         builder.addCase(getUserData.fulfilled, (state, action) => {
             state.isLogined = true;
             state.userInfo = action.payload;
+        });
+        builder.addCase(updateUserInfo.fulfilled, (state, action) => {
+            state.userInfo = action.payload;
+        });
+        builder.addCase(userLogout.fulfilled, (state) => {
+            state.isLogined = false;
+            state.userInfo = {
+                displayName: null,
+                email: null,
+                uid: null,
+                refreshToken: null,
+                photoURL: null
+            }
+            Cookies.set('isLogined', '0');
         });
         // Error Block
         builder.addCase(userLogin.pending, () => {
@@ -80,5 +110,5 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { userLogout } = userSlice.actions;
+// export const { userLogout } = userSlice.actions;
 export const selectUser = (state: RootState) => state.user;

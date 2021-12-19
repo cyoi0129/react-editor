@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Avatar, Button, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
 // import Link from '@mui/material/Link';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Loading, Notice } from './';
+import { Loading, Notice, UserInfo } from './';
 import { userLogin } from '../features/User'
 import { userInfoData, userLoginData, userStatus } from '../app/types';
 import { DataContext } from '../App';
@@ -45,13 +45,14 @@ const Login: VFC = () => {
   return (
     <Container component="main" maxWidth="xs">
       {login ?
-        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column' }}>
-          <Typography component="h1" variant="h5">Welcome! You've logined!</Typography>
-          <Avatar alt={userInfo.displayName as string} src={userInfo.photoURL as string} />
-          <Typography component="h3" variant="h6">ID: {userInfo.uid}</Typography>
-          <Typography component="h3" variant="h6">Name: {userInfo.displayName}</Typography>
-          <Typography component="h3" variant="h6">Email: {userInfo.email}</Typography>
-        </Box>
+        <UserInfo />
+        // <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column' }}>
+        //   <Typography component="h1" variant="h5">Welcome! You've logined!</Typography>
+        //   <Avatar alt={userInfo.displayName as string} src={userInfo.photoURL as string} />
+        //   <Typography component="h3" variant="h6">ID: {userInfo.uid}</Typography>
+        //   <Typography component="h3" variant="h6">Name: {userInfo.displayName}</Typography>
+        //   <Typography component="h3" variant="h6">Email: {userInfo.email}</Typography>
+        // </Box>
         :
         <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>

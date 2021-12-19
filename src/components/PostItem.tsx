@@ -18,7 +18,7 @@ const PostItem: VFC<Props> = (Props) =>{
     <Link to={`/post/${String(data.id)}`}>
     <ListItem alignItems="flex-start" sx={{textDecoration: 'none', color: '#555'}}>
       <ListItemAvatar>
-        <Avatar alt={data.title} src={data.thumbnail} />
+        <Avatar alt={data.title} src={data.thumbnail === '' ? '/no-image.svg' : data.thumbnail } />
       </ListItemAvatar>
       <ListItemText
         primary={data.title}

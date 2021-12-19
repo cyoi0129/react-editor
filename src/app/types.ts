@@ -74,3 +74,8 @@ export interface userStatus {
   userLogin: userLoginData,
   userInfo: userInfoData
 }
+
+export interface userUpdateData {
+  displayName: string,
+  photoURL: string
+}
