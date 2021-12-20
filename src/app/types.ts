@@ -71,6 +71,7 @@ export interface userInfoData {
 
 export interface userStatus {
   isLogined: boolean,
+  isLoginError: boolean,
   userLogin: userLoginData,
   userInfo: userInfoData
 }

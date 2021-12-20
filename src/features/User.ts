@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 
 const initialState: userStatus = {
     isLogined: false,
+    isLoginError: false,
     userLogin: {
         email: '',
         password: ''
@@ -70,6 +71,7 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(userLogin.fulfilled, (state, action) => {
             state.isLogined = true;
+            state.isLoginError = false;
             state.userLogin.email = '';
             state.userLogin.password = '';
             state.userInfo = action.payload;
@@ -94,10 +96,14 @@ const userSlice = createSlice({
             Cookies.set('isLogined', '0');
         });
         // Error Block
-        builder.addCase(userLogin.pending, () => {
+        builder.addCase(userLogin.pending, (state) => {
+            state.isLogined = false;
+            state.isLoginError = true;
             // Error process
         });
-        builder.addCase(userLogin.rejected, () => {
+        builder.addCase(userLogin.rejected, (state) => {
+            state.isLogined = false;
+            state.isLoginError = true;
             // Error process
         });
         builder.addCase(getUserData.pending, () => {

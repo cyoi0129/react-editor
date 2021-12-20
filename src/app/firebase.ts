@@ -76,6 +76,7 @@ export const addPost = async (post: postData) => {
 export const userAuth = async (user: userLoginData) => {
   const userLogin = await auth.signInWithEmailAndPassword(user.email, user.password);
   const userData = userLogin.user;
+  console.log(userData);
   const result: userInfoData = {
     displayName: userData?.displayName,
     email: userData?.email,

@@ -16,6 +16,7 @@ const Login: VFC = () => {
   const [login, setLogin] = useState<boolean>(userStatus.isLogined);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -29,30 +30,28 @@ const Login: VFC = () => {
     }
     dispatch(userLogin(loginInfo));
     setTimeout(() => {
-      setLoaded(true);
+      if (!error && login) {
+        setLoaded(true);
+      }
     }, 500);
     setTimeout(() => {
       setLoading(false);
-      navigate('/');
+      if (!error && login) {
+        navigate('/');
+      }
     }, 2000);
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     setLogin(userStatus.isLogined);
     setUserInfo(userStatus.userInfo);
-   }, [userStatus]);
+    setError(userStatus.isLoginError);
+  }, [userStatus]);
 
   return (
     <Container component="main" maxWidth="xs">
       {login ?
         <UserInfo />
-        // <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column' }}>
-        //   <Typography component="h1" variant="h5">Welcome! You've logined!</Typography>
-        //   <Avatar alt={userInfo.displayName as string} src={userInfo.photoURL as string} />
-        //   <Typography component="h3" variant="h6">ID: {userInfo.uid}</Typography>
-        //   <Typography component="h3" variant="h6">Name: {userInfo.displayName}</Typography>
-        //   <Typography component="h3" variant="h6">Email: {userInfo.email}</Typography>
-        // </Box>
         :
         <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
@@ -77,6 +76,7 @@ const Login: VFC = () => {
       }
       <Loading show={loading} />
       <Notice show={loaded} message="Save successed!" type="success" />
+      <Notice show={error} message="Login error" type="error" />
     </Container>
   );
 }
