@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, createSelector } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
 import { userLoginData, userStatus, userUpdateData } from '../app/types';
 import { userAuth, fetchUserData, updateUserData, removeUserLogin } from '../app/firebase';

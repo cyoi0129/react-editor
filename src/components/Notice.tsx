@@ -1,6 +1,5 @@
 import { forwardRef, useState, SyntheticEvent, VFC, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
@@ -17,10 +16,6 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref,)
 const Notice: VFC<Props> = (Props) => {
     const { show, type, message } = Props;
     const [open, setOpen] = useState(show);
-    const handleClick = () => {
-        setOpen(true);
-    };
-
     const handleClose = (event?: SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;

@@ -1,5 +1,5 @@
 import { VFC, useState, useContext, useEffect } from 'react';
-import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { useAppDispatch } from '../app/hooks';
 import { userLogout } from '../features';
 import { Link, useNavigate } from 'react-router-dom';
 import { DataContext } from '../App';

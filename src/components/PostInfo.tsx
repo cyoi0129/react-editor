@@ -1,4 +1,4 @@
-import { VFC, useState, useContext, ChangeEvent, useEffect } from 'react';
+import { VFC, useState, useContext, ChangeEvent } from 'react';
 import { DataContext } from '../App';
 import { Theme, useTheme, styled, Box, TextField, FormControl, Select, MenuItem, OutlinedInput, Chip, SelectChangeEvent, Stack, IconButton, InputLabel, Typography } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
@@ -99,7 +99,7 @@ const PostInfo: VFC<Props> = (Props) => {
             onChange={changeCategory}
           >
             {(categoryList as Array<masterItem>).map((categoryItem) => (
-              <MenuItem value={categoryItem.name}>{categoryItem.name}</MenuItem>
+              <MenuItem value={categoryItem.name} key={categoryItem.id}>{categoryItem.name}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -122,6 +122,7 @@ const PostInfo: VFC<Props> = (Props) => {
             {(tagList as Array<masterItem>).map((tagItem) => (
               <MenuItem
                 value={tagItem.name}
+                key={tagItem.id}
                 style={getStyles(tagItem.name, selectedTagList, theme)}
               >
                 {tagItem.name}
@@ -139,7 +140,7 @@ const PostInfo: VFC<Props> = (Props) => {
           <Typography variant="body1">Thumbnail</Typography>
         </Stack>
         <Box sx={{ mx: 2 }}>
-          {thumbnail !== '' ? <img src={thumbnail} width={160} height={120} /> : <Typography variant="body2" color="GrayText">No Image</Typography>}
+          {thumbnail !== '' ? <img src={thumbnail} width={160} height={120} alt="Thumbnail" /> : <Typography variant="body2" color="GrayText">No Image</Typography>}
         </Box>
       </Stack>
     </>

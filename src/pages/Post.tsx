@@ -6,7 +6,7 @@ import { DataContext } from '../App';
 import { Grid, Fab, Typography, Box } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { postItem, postInfo, postContent, postMeta } from '../app/types';
+import { postItem, postInfo, postContent } from '../app/types';
 import { getPostByID, getPostInfo, post2DB, createPostObj } from '../app/utils';
 import { updatePostItem, removePostItem, addPostItem } from '../features';
 

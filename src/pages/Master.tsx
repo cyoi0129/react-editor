@@ -59,7 +59,7 @@ const Category: VFC = () => {
     }
     useEffect(() => {
         setMasters(masterList);
-    }, [type]);
+    }, [type, masterList]);
 
     useEffect(() => {
         if (!isLogined) {

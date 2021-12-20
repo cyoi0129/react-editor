@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice, createSelector } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
-import { masterItem, masterList } from '../app/types';
+import { masterList } from '../app/types';
 import { fetchData, updateMaster } from '../app/firebase';
 
 const initialState: masterList = {

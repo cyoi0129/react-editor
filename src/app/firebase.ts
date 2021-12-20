@@ -1,5 +1,5 @@
 import { firebaseConfig } from './config';
-import { postItem, masterItem, postData, dbPostItem, userStatus, userLoginData, userInfoData } from './types'
+import { postData, dbPostItem, userLoginData, userInfoData } from './types'
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';

@@ -6,13 +6,12 @@ import { Avatar, Button, TextField, FormControlLabel, Checkbox, Grid, Box, Typog
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Loading, Notice, UserInfo } from './';
 import { userLogin } from '../features/User'
-import { userInfoData, userLoginData, userStatus } from '../app/types';
+import { userLoginData, userStatus } from '../app/types';
 import { DataContext } from '../App';
 
 const Login: VFC = () => {
   const navigate = useNavigate();
   const userStatus: userStatus = useContext(DataContext).user;
-  const [userInfo, setUserInfo] = useState<userInfoData>(userStatus.userInfo);
   const [login, setLogin] = useState<boolean>(userStatus.isLogined);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
@@ -45,7 +44,6 @@ const Login: VFC = () => {
 
   useEffect(() => {
     setLogin(userStatus.isLogined);
-    setUserInfo(userStatus.userInfo);
     setError(userStatus.isLoginError);
   }, [userStatus]);
 

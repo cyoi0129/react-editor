@@ -3,7 +3,7 @@ import { useAppDispatch } from '../app/hooks';
 import { DataContext } from '../App';
 import { styled, Box, TextField, Stack, IconButton, Typography, Button } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { userInfoData, userLoginData, userStatus, userUpdateData } from '../app/types';
+import { userInfoData, userUpdateData } from '../app/types';
 import { Loading, Notice } from './';
 import { updateUserInfo } from '../features/User'
 import { uploadFile } from '../app/firebase';
@@ -68,7 +68,7 @@ const UserInfo: VFC = () => {
                     <Typography variant="body1">Profile Image</Typography>
                 </Stack>
                 <Box sx={{ m: 1 }}>
-                    {image === null || undefined ? <Typography variant="body2" color="GrayText">No Image</Typography> : <img src={image} width={120} />}
+                    {image === null || undefined ? <Typography variant="body2" color="GrayText">No Image</Typography> : <img src={image} width={120} alt="Profile Image" />}
                 </Box>
                 <Box sx={{ m: 1 }}>
                     <Button variant="contained" onClick={saveUserInfo}>Save</Button>
