@@ -54,7 +54,7 @@ const UserInfo: VFC = () => {
 
     return (
         <>
-            <Stack sx={{ maxWidth: 720 }}>
+            <Stack sx={{ maxWidth: 480 }}>
                 <Typography component="h1" variant="h5" sx={{ p: 1 }}>Welcome! {name}</Typography>
                 <Typography component="p" variant="body2" sx={{ p: 2 }}>ID: {userInfo.uid}</Typography>
                 <TextField label="Name" onChange={changeName} value={name} multiline sx={{ m: 1 }} />

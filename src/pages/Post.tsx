@@ -39,6 +39,8 @@ const Post: VFC = () => {
       setPostMeta({ ...postMeta, tag: value as number[] })
     } else if (key === 'thumbnail') {
       setPostMeta({ ...postMeta, thumbnail: value as string })
+    }else if (key === 'date') {
+      setPostMeta({ ...postMeta, date: value as string })
     } else {
       console.log('Invailed value!')
     }
@@ -86,12 +88,12 @@ const Post: VFC = () => {
   return (
     <>
       <Grid container spacing={1}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <PostInfo postInfo={postInfo} changePostInfo={changePostInfo} />
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography variant="h6" component="h2" sx={{ mb: 2, mx: 1 }}>Content</Typography>
-          <Box sx={{ m: 1, p: 1, border: 'solid 1px #efefef', borderRadius: 2, maxHeight: 480, overflow: 'scroll' }}>
+        <Grid item xs={12} md={8}>
+          <Typography variant="h6" component="h2" sx={{ mt: 1, mb: 2, mx: 1 }}>Content</Typography>
+          <Box sx={{ m: 1, px: 2, py: 1, border: 'solid 1px rgba(0, 0, 0, 0.23)', borderRadius: 2, maxHeight: 480, maxWidth: 680, overflow: 'scroll' }}>
             <Editor content={postContent} changeContent={changeContent} />
           </Box>
         </Grid>

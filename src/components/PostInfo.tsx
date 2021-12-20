@@ -2,8 +2,11 @@ import { VFC, useState, useContext, ChangeEvent } from 'react';
 import { DataContext } from '../App';
 import { Theme, useTheme, styled, Box, TextField, FormControl, Select, MenuItem, OutlinedInput, Chip, SelectChangeEvent, Stack, IconButton, InputLabel, Typography } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
 import { masterItem, postInfo } from '../app/types';
-import { getMasterNameByID, getMasterIDByName } from '../app/utils';
+import { getMasterNameByID, getMasterIDByName, convertDate } from '../app/utils';
 import { uploadFile } from '../app/firebase';
 
 export type Props = {
@@ -45,9 +48,11 @@ const PostInfo: VFC<Props> = (Props) => {
   const initCategory = postInfo.id === '' ? '' : getMasterNameByID(postInfo.category, categoryList);
   const [title, setTitle] = useState<string>(postInfo.title);
   const [description, setDescription] = useState<string>(postInfo.description);
+  // const [date, setDate] = useState<string>(postInfo.date);
+  const [date, setDate] = useState<Date | null>(new Date(postInfo.date));
   const [thumbnail, setThumbnail] = useState<string>(postInfo.thumbnail);
   const [category, setCategory] = useState<string>(initCategory);
-  const [selectedTagList, setSelectedTagList] = useState<string[]|[]>(initTagList);
+  const [selectedTagList, setSelectedTagList] = useState<string[] | []>(initTagList);
 
   const changeTitle = (event: ChangeEvent<HTMLInputElement>) => {
     changePostInfo('title', event.target.value);
@@ -58,6 +63,12 @@ const PostInfo: VFC<Props> = (Props) => {
     changePostInfo('description', event.target.value);
     setDescription(event.target.value);
   };
+
+  const changeDate = (newDate: Date | null) => {
+    setDate(newDate);
+    const dateStr = newDate === null ? '' : convertDate(newDate).dateString;
+    changePostInfo('date', dateStr);
+  }
 
   const changeCategory = (event: SelectChangeEvent) => {
     const targetCateogry: number = getMasterIDByName(event.target.value, categoryList);
@@ -84,13 +95,13 @@ const PostInfo: VFC<Props> = (Props) => {
       console.log('Upload failed');
     }
   }
-  
+
   return (
     <>
       <Stack sx={{ maxWidth: 720 }}>
         <Typography variant="h6" component="h1" sx={{ p: 1 }}>{currentID}</Typography>
-        <TextField onChange={changeTitle} value={title} multiline sx={{ m: 1 }} />
-        <TextField onChange={changeDescription} value={description} multiline sx={{ m: 1 }} />
+        <TextField onChange={changeTitle} label="Title" value={title} multiline sx={{ m: 1 }} />
+        <TextField onChange={changeDescription} label="Description" value={description} multiline sx={{ m: 1 }} />
         <FormControl sx={{ m: 1 }}>
           <InputLabel>Category</InputLabel>
           <Select
@@ -130,6 +141,18 @@ const PostInfo: VFC<Props> = (Props) => {
             ))}
           </Select>
         </FormControl>
+        <Box sx={{ m: 1 }}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Public date"
+              value={date}
+              onChange={(newValue) => {
+                changeDate(newValue);
+              }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        </Box>
         <Stack direction="row" alignItems="center" spacing={2}>
           <label htmlFor="icon-button-file">
             <Input accept="image/*" id="icon-button-file" type="file" onChange={(event) => changeThumbnail(event)} />
