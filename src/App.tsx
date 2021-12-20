@@ -4,7 +4,7 @@ import { useNavigate, Routes, Route } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from './app/hooks';
 import Cookies from 'js-cookie';
 import { Home, PostList, Post, Master, User } from './pages';
-import { Editor, ScrollToTop, Header, Footer } from './components';
+import { ScrollToTop, Header, Footer } from './components';
 
 import { selectPost, getPostList, getMasterList, selectMaster, getUserData, selectUser } from './features';
 import { postList, masterItem, userStatus } from './app/types'

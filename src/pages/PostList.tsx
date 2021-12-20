@@ -1,16 +1,22 @@
-import { VFC, useContext } from 'react';
+import { VFC, useContext, useEffect } from 'react';
 import { DataContext } from '../App';
+import { useNavigate } from 'react-router-dom';
 import { List, Divider, Typography, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { PostItem } from '../components';
-import { useNavigate } from 'react-router-dom';
 
 const PostList: VFC = () => {
   const navigate = useNavigate();
+  const isLogined = useContext(DataContext).user.isLogined;
   const posts = useContext(DataContext).posts.posts;
   const addPost = () => {
     navigate('/post/new');
   }
+  useEffect(() => {
+    if (!isLogined) {
+      navigate('/user/');
+    }
+  }, [isLogined]);
   return (
     <>
       <Typography variant="h4" component="h1">Posts</Typography>

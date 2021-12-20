@@ -36,6 +36,7 @@ const Login: VFC = () => {
     }, 500);
     setTimeout(() => {
       setLoading(false);
+      setError(false);
       if (!error && login) {
         navigate('/');
       }

@@ -1,6 +1,6 @@
 import { VFC, useContext, useState, useEffect } from 'react';
 import { useAppDispatch } from '../app/hooks';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ListedItem, Loading, Notice } from '../components'
 import { Typography, List, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -12,7 +12,9 @@ import { updateMasterList } from '../features';
 
 const Category: VFC = () => {
     const { type } = useParams();
+    const navigate = useNavigate();
     const data = useContext(DataContext);
+    const isLogined = useContext(DataContext).user.isLogined;
     const dispatch = useAppDispatch();
     const masterList = type === 'category' ? data.categories : data.tags;
     const [masters, setMasters] = useState<masterItem[]>(masterList);
@@ -58,6 +60,12 @@ const Category: VFC = () => {
     useEffect(() => {
         setMasters(masterList);
     }, [type]);
+
+    useEffect(() => {
+        if (!isLogined) {
+            navigate('/user/');
+        }
+    }, [isLogined]);
 
     return (
         <>
