@@ -1,29 +1,30 @@
+// basic
 import { useState, VFC, useEffect } from 'react';
+// components
+import { ListedItemProps } from '../app/types';
+// 3rd party library
 import { ListItem, ListItemButton, ListItemIcon, ListItemText, TextField, Grid } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { masterItem } from '../app/types'
 
-export type Props = {
-  data: masterItem;
-  removeMaster: any;
-  changeMaster: any;
-}
-
-const ListedItem: VFC<Props> = (Props) => {
+const ListedItem: VFC<ListedItemProps> = (Props) => {
   const { data, removeMaster, changeMaster } = Props;
   const [ name, setName ] = useState<string>(data.name);
   const [ id, setId ] = useState<number>(data.id);
+  
   const removeItem = () => {
     removeMaster(id);
   }
+
   const changeItem = (value: string) => {
     setName(value);
     changeMaster({id: id, name: value});
   }
+
   useEffect(() => {
     setId(data.id);
     setName(data.name);
   }, [data]);
+
   return (
     <ListItem>
       <Grid container spacing={0}>

@@ -5,7 +5,6 @@ export { default as Editor } from './Editor';
 export { default as PostItem } from './PostItem';
 export { default as PostInfo } from './PostInfo';
 export { default as ListedItem } from './ListedItem';
-export { default as Account } from './Account';
 export { default as UserInfo } from './UserInfo';
 export { default as Loading } from './Loading';
 export { default as Notice } from './Notice';

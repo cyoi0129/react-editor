@@ -1,17 +1,17 @@
+// basic
 import { VFC, useState, useContext, ChangeEvent, useEffect } from 'react';
 import { useAppDispatch } from '../app/hooks';
+// components
 import { DataContext } from '../App';
-import { styled, Box, TextField, Stack, IconButton, Typography, Button } from '@mui/material';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { userInfoData, userUpdateData } from '../app/types';
 import { Loading, Notice } from './';
-import { updateUserInfo } from '../features/User'
+import { updateUserInfo } from '../features/User';
+// 3rd party library
 import { uploadFile } from '../app/firebase';
+import { styled, Box, TextField, Stack, IconButton, Typography, Button } from '@mui/material';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 
 const UserInfo: VFC = () => {
-    const Input = styled('input')({
-        display: 'none',
-    });
     const dispatch = useAppDispatch();
     const userInfo: userInfoData = useContext(DataContext).user.userInfo;
     const [name, setName] = useState(userInfo.displayName);
@@ -51,6 +51,10 @@ const UserInfo: VFC = () => {
         setName(userInfo.displayName);
         setImage(userInfo.photoURL);
     }, [userInfo]);
+
+    const Input = styled('input')({
+        display: 'none',
+    });
 
     return (
         <>

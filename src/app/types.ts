@@ -86,3 +86,37 @@ export interface RenderTree {
   name: string;
   children?: readonly RenderTree[];
 }
+
+export interface EditorProps {
+  content: {
+    time: number,
+    blocks: [],
+    version: string
+  };
+  changeContent: any;
+}
+
+export interface NoticeProps {
+  show: boolean,
+  type: 'success' | 'error',
+  message: string
+}
+
+export interface LoadingProps {
+  show: boolean
+}
+
+export interface ListedItemProps {
+  data: masterItem;
+  removeMaster: any;
+  changeMaster: any;
+}
+
+export interface PostInfoProps {
+  postInfo: postInfo;
+  changePostInfo: any;
+}
+
+export interface PostItemProps {
+  data: postItem;
+}

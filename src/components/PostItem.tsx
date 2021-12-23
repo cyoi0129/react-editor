@@ -1,16 +1,14 @@
+// basic
 import { VFC, useContext } from 'react';
 import { DataContext } from '../App';
 import { Link } from 'react-router-dom';
-import { ListItem, ListItemText, ListItemAvatar, Avatar, Typography } from '@mui/material';
-import { postItem } from '../app/types';
+// components
+import { PostItemProps } from '../app/types';
 import { getMasterNameByID } from '../app/utils';
+// 3rd party library
+import { ListItem, ListItemText, ListItemAvatar, Avatar, Typography } from '@mui/material';
 
-
-export type Props = {
-  data: postItem;
-}
-
-const PostItem: VFC<Props> = (Props) =>{
+const PostItem: VFC<PostItemProps> = (Props) =>{
   const { data } = Props;
   const cateogries = useContext(DataContext).categories;
 

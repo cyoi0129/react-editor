@@ -1,21 +1,24 @@
+// basic
 import { VFC, useContext, useState, useEffect } from 'react';
 import { useAppDispatch } from '../app/hooks';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ListedItem, Loading, Notice } from '../components'
-import { Typography, List, Fab } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import SaveIcon from '@mui/icons-material/Save';
+// components
+import { ListedItem, Loading, Notice } from '../components';
 import { DataContext } from '../App';
 import { masterItem } from '../app/types';
 import { calNextID } from '../app/utils';
 import { updateMasterList } from '../features';
+// 3rd party library
+import { Typography, List, Fab } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import SaveIcon from '@mui/icons-material/Save';
 
 const Category: VFC = () => {
-    const { type } = useParams();
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const { type } = useParams();
     const data = useContext(DataContext);
     const isLogined = useContext(DataContext).user.isLogined;
-    const dispatch = useAppDispatch();
     const masterList = type === 'category' ? data.categories : data.tags;
     const [masters, setMasters] = useState<masterItem[]>(masterList);
     const [loading, setLoading] = useState<boolean>(false);
@@ -29,9 +32,11 @@ const Category: VFC = () => {
         }
         setMasters([...masters, newItem]);
     }
+
     const removeMaster = (id: number) => {
         setMasters(masters.filter(master => master.id !== id));
     }
+
     const changeMaster = (targetMaster: masterItem) => {
         let tempMasterList = masters.filter(master => master.id !== targetMaster.id);
         tempMasterList.push(targetMaster);

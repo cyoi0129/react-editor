@@ -1,14 +1,15 @@
+// basic
 import { VFC, useEffect, createContext } from 'react';
-import './App.css';
 import { useNavigate, Routes, Route } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from './app/hooks';
-import Cookies from 'js-cookie';
+// components
 import { Home, PostList, Post, Master, User } from './pages';
 import { ScrollToTop, Header, Footer } from './components';
-
 import { selectPost, getPostList, getMasterList, selectMaster, getUserData, selectUser } from './features';
 import { postList, masterItem, userStatus } from './app/types'
-
+import './App.css';
+// 3rd party library
+import Cookies from 'js-cookie';
 import { Container } from '@mui/material';
 
 export const DataContext = createContext({} as {

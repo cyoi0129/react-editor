@@ -1,19 +1,13 @@
-import { VFC, useImperativeHandle, forwardRef, Ref, useEffect } from 'react';
+// basic
+import { VFC, useEffect } from 'react';
+// components
+import { EditorProps } from '../app/types';
+// 3rd party library
 import EditorJS from '@editorjs/editorjs';
-import { uploadFile, downloadFile } from '../app/firebase';
+import { uploadFile } from '../app/firebase';
 
-export type Props = {
-  content: {
-    time: number,
-    blocks: [],
-    version: string
-  };
-  changeContent: any;
-}
-
-const Editor: VFC<Props> = (Props) => {
+const Editor: VFC<EditorProps> = (Props) => {
   const { content, changeContent } = Props;
-
   // tslint:disable-next-line:no-var-requires
   const Header = require('@editorjs/header');
   const List = require('@editorjs/list');

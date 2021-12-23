@@ -1,22 +1,23 @@
-import { VFC, useEffect } from 'react';
-import { Typography, Stack, Box, List, ListItem, ListItemText, ListItemIcon, Divider, Slide, Grow, Zoom, Container } from '@mui/material';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useNavigate, Link } from 'react-router-dom';
+// basic
+import { VFC } from 'react';
+// components
 import { ReactComponent as ReactIcon } from '../images/react.svg';
 import { ReactComponent as ReduxIcon } from '../images/redux.svg';
 import { ReactComponent as FirebaseIcon } from '../images/firebase.svg';
+import Data from '../app/data.json';
+import { RenderTree } from '../app/types';
+// 3rd party library
+import { Typography, Stack, Box, List, ListItem, ListItemText, ListItemIcon, Divider, Slide, Grow, Zoom, Container } from '@mui/material';
 import TreeView from '@mui/lab/TreeView';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TreeItem from '@mui/lab/TreeItem';
 import FolderIcon from '@mui/icons-material/Folder';
 import ArticleIcon from '@mui/icons-material/Article';
-import Data from '../app/data.json';
-import { RenderTree } from '../app/types';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const Home: VFC = () => {
-  const navigate = useNavigate();
   const data: RenderTree = Data.files;
   const codeExample = Data.codes;
   const renderTree = (nodes: RenderTree) => (

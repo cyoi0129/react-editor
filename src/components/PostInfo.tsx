@@ -1,54 +1,27 @@
+// basic
 import { VFC, useState, useContext, ChangeEvent } from 'react';
+// components
 import { DataContext } from '../App';
+import { masterItem, PostInfoProps } from '../app/types';
+import { getMasterNameByID, getMasterIDByName, convertDate } from '../app/utils';
+// 3rd party library
+import { uploadFile } from '../app/firebase';
 import { Theme, useTheme, styled, Box, TextField, FormControl, Select, MenuItem, OutlinedInput, Chip, SelectChangeEvent, Stack, IconButton, InputLabel, Typography } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import { masterItem, postInfo } from '../app/types';
-import { getMasterNameByID, getMasterIDByName, convertDate } from '../app/utils';
-import { uploadFile } from '../app/firebase';
 
-export type Props = {
-  postInfo: postInfo;
-  changePostInfo: any;
-}
-
-const PostInfo: VFC<Props> = (Props) => {
-  // UI setting
+const PostInfo: VFC<PostInfoProps> = (Props) => {
   const theme = useTheme();
-  const Input = styled('input')({
-    display: 'none',
-  });
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
-  const getStyles = (name: string, personName: readonly string[], theme: Theme) => {
-    return {
-      fontWeight:
-        personName.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
-    };
-  }
-
-  // Data
-  const { postInfo, changePostInfo } = Props;
-  const categoryList = useContext(DataContext).categories;
   const tagList = useContext(DataContext).tags;
+  const categoryList = useContext(DataContext).categories;
+  const { postInfo, changePostInfo } = Props;
   const currentID: string = postInfo.id === '' ? 'New Post' : 'Post ID: ' + postInfo.id;
   const initTagList = postInfo.id === '' ? [] : postInfo.tag.map(tagItem => getMasterNameByID(tagItem, tagList));
   const initCategory = postInfo.id === '' ? '' : getMasterNameByID(postInfo.category, categoryList);
   const [title, setTitle] = useState<string>(postInfo.title);
   const [description, setDescription] = useState<string>(postInfo.description);
-  // const [date, setDate] = useState<string>(postInfo.date);
   const [date, setDate] = useState<Date | null>(new Date(postInfo.date));
   const [thumbnail, setThumbnail] = useState<string>(postInfo.thumbnail);
   const [category, setCategory] = useState<string>(initCategory);
@@ -94,6 +67,28 @@ const PostInfo: VFC<Props> = (Props) => {
     } else {
       console.log('Upload failed');
     }
+  }
+
+  const Input = styled('input')({
+    display: 'none',
+  });
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+  const getStyles = (name: string, personName: readonly string[], theme: Theme) => {
+    return {
+      fontWeight:
+        personName.indexOf(name) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
   }
 
   return (

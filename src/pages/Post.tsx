@@ -1,24 +1,26 @@
+// basic
 import { VFC, useContext, useState } from 'react';
 import { useAppDispatch } from '../app/hooks';
 import { useParams, useNavigate } from 'react-router-dom';
+// components
 import { PostInfo, Editor, Loading, Notice } from '../components';
 import { DataContext } from '../App';
-import { Grid, Fab, Typography, Box } from '@mui/material';
-import SaveIcon from '@mui/icons-material/Save';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { postItem, postInfo, postContent } from '../app/types';
 import { getPostByID, getPostInfo, post2DB, createPostObj } from '../app/utils';
 import { updatePostItem, removePostItem, addPostItem } from '../features';
+// 3rd party library
+import { Grid, Fab, Typography, Box } from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Post: VFC = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
-  const posts = useContext(DataContext).posts.posts;
   const dispatch = useAppDispatch();
+  const { id } = useParams();
+  const posts = useContext(DataContext).posts.posts;
   const postID: string = id ? id : 'new';
   const postObj: postItem = getPostByID(postID, posts);
   const postInfo: postInfo = getPostInfo(postObj);
-
   const [postMeta, setPostMeta] = useState<postInfo>(postInfo);
   const [postContent, setPostContent] = useState<postContent>(postObj.content);
   const [loading, setLoading] = useState<boolean>(false);

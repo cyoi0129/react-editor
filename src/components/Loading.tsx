@@ -1,12 +1,12 @@
+// basic
 import { VFC, useState, useEffect } from 'react';
+// components
+import { LoadingProps } from '../app/types';
+// 3rd party library
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
-export interface Props {
-    show: boolean
-}
-
-const Loading: VFC<Props> = (Props) => {
+const Loading: VFC<LoadingProps> = (Props) => {
     const { show } = Props;
     const [open, setOpen] = useState(show);
     const handleClose = () => {
