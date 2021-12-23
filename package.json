@@ -33,6 +33,7 @@
         "@types/react-redux": "^7.1.20",
         "code-prettify-google": "^1.0.1",
         "date-fns": "^2.27.0",
+        "editorjs-style": "^3.0.2",
         "firebase": "^9.6.1",
         "js-cookie": "^3.0.1",
         "react": "^17.0.2",

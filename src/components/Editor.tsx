@@ -13,6 +13,8 @@ const Editor: VFC<EditorProps> = (Props) => {
   const List = require('@editorjs/list');
   const ImageTool = require('@editorjs/image');
   const SimpleImage = require('@editorjs/simple-image');
+  const Table = require('@editorjs/table');
+  const EditorJSStyle = require('editorjs-style');
 
   function createEditor() {
     const setContent = () => {
@@ -28,6 +30,7 @@ const Editor: VFC<EditorProps> = (Props) => {
       tools: {
         header: Header,
         list: List,
+        table: Table,
         image: {
           class: ImageTool,
           config: {
@@ -45,7 +48,8 @@ const Editor: VFC<EditorProps> = (Props) => {
             }
           }
         },
-        simpleImage: SimpleImage
+        simpleImage: SimpleImage,
+        style: EditorJSStyle.StyleInlineTool
       },
       data: content,
       onChange: setContent
