@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 // components
 import { Loading, Notice, UserInfo } from '../components';
 import { userLogin } from '../features/User'
-import { userLoginData, userStatus } from '../app/types';
+import { userLoginData, userStatus, NoticeProps } from '../app/types';
 import { DataContext } from '../App';
 // 3rd party library
 import { Avatar, Button, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container } from '@mui/material';
@@ -17,8 +17,27 @@ const User: VFC = () => {
   const userStatus: userStatus = useContext(DataContext).user;
   const [login, setLogin] = useState<boolean>(userStatus.isLogined);
   const [loading, setLoading] = useState<boolean>(false);
-  const [loaded, setLoaded] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+
+  const defaultNotice: NoticeProps = {
+    show: false,
+    message: '',
+    type: 'success'
+  }
+
+  const successNotice: NoticeProps = {
+    show: true,
+    message: 'Login successed!',
+    type: 'success'
+  }
+
+  const failedNotice: NoticeProps = {
+    show: true,
+    message: 'Login failed!',
+    type: 'error'
+  }
+
+  const [loaded, setLoaded] = useState<NoticeProps>(defaultNotice);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
@@ -31,22 +50,17 @@ const User: VFC = () => {
     }
     dispatch(userLogin(loginInfo));
     setTimeout(() => {
-      if (!error && login) {
-        setLoaded(true);
-      }
-    }, 500);
-    setTimeout(() => {
       setLoading(false);
-      setError(false);
-      if (!error && login) {
-        navigate('/');
-      }
-    }, 2000);
+    }, 2000)
   };
 
   useEffect(() => {
-    setLogin(userStatus.isLogined);
-    setError(userStatus.isLoginError);
+    if (userStatus.isLogined) {
+      setLoaded(successNotice);
+      setLogin(true);
+    } else if (userStatus.isLoginError) {
+      setLoaded(failedNotice);
+    }
   }, [userStatus]);
 
   return (
@@ -78,8 +92,9 @@ const User: VFC = () => {
         </Container>
       }
       <Loading show={loading} />
-      <Notice show={loaded} message="Save successed!" type="success" />
-      <Notice show={error} message="Login error" type="error" />
+      <Notice show={loaded.show} message={loaded.message} type={loaded.type} />
+      {/* <Notice show={loaded} message="Save successed!" type="success" />
+      <Notice show={error} message="Login error" type="error" /> */}
     </>
   );
 }
