@@ -15,7 +15,11 @@ a {
     height: 40vmin;
     pointer-events: none;
 }
-
+.prettyprint {
+    padding: 16px;
+    border-radius: 8px;
+    white-space: break-spaces;
+}
 @media (prefers-reduced-motion: no-preference) {
     .App-logo {
         animation: App-logo-float infinite 3s ease-in-out;
