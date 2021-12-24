@@ -56,7 +56,6 @@ const User: VFC = () => {
 
   useEffect(() => {
     if (userStatus.isLogined) {
-      setLoaded(successNotice);
       setLogin(true);
     } else if (userStatus.isLoginError) {
       setLoaded(failedNotice);
