@@ -16,6 +16,7 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import LabelIcon from '@mui/icons-material/Label';
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
+import PermMediaIcon from '@mui/icons-material/PermMedia';
 
 const Header: VFC = () => {
   const dispatch = useAppDispatch();
@@ -44,6 +45,11 @@ const Header: VFC = () => {
       name: 'Tag',
       link: 'master/tag',
       icon: <LabelIcon />
+    },
+    {
+      name: 'Media',
+      link: 'media',
+      icon: <PermMediaIcon />
     },
     {
       name: 'Account',

@@ -25,8 +25,8 @@ const UserInfo: VFC = () => {
 
     const changeImage = async (event: any) => {
         const result = await uploadFile(event.target.files[0]);
-        if (result.success === 1) {
-            setImage(result.file.url);
+        if (result.name) {
+            setImage(result.url);
         } else {
             console.log('Upload failed');
         }

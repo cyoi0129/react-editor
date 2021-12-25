@@ -39,6 +39,15 @@ export interface postList {
   posts: postItem[] | []
 }
 
+export interface fileItem {
+  name: string,
+  url: string
+}
+
+export interface fileList {
+  files: fileItem[] | [];
+}
+
 export interface dbPostItem {
   target: string,
   data: postData

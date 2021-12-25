@@ -3,10 +3,10 @@ import { VFC, useEffect, createContext } from 'react';
 import { useNavigate, Routes, Route } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from './app/hooks';
 // components
-import { Home, PostList, Post, Master, User } from './pages';
+import { Home, PostList, Post, Master, User, MediaList } from './pages';
 import { ScrollToTop, Header, Footer } from './components';
-import { selectPost, getPostList, getMasterList, selectMaster, getUserData, selectUser } from './features';
-import { postList, masterItem, userStatus } from './app/types'
+import { selectPost, getPostList, getMasterList, selectMaster, getUserData, selectUser, selectFile, getFileList } from './features';
+import { postList, masterItem, userStatus, fileItem } from './app/types'
 import './App.css';
 // 3rd party library
 import Cookies from 'js-cookie';
@@ -16,7 +16,8 @@ export const DataContext = createContext({} as {
   posts: postList,
   categories: masterItem[],
   tags: masterItem[],
-  user: userStatus
+  user: userStatus,
+  files: fileItem[]
 })
 
 const App: VFC = () => {
@@ -26,19 +27,21 @@ const App: VFC = () => {
   const categoryListData = useAppSelector(selectMaster).categories;
   const tagListData = useAppSelector(selectMaster).tags;
   const userStatus = useAppSelector(selectUser);
+  const fileList = useAppSelector(selectFile).files;
   const isCookieLogined: boolean = Cookies.get('isLogined') === '1' ? true : false;
   useEffect(() => {
     if (isCookieLogined) {
       dispatch(getUserData());
       dispatch(getPostList());
       dispatch(getMasterList());
+      dispatch(getFileList());
     } else {
       navigate('/user/');
     }
   }, [dispatch, isCookieLogined]);
   return (
     <>
-      <DataContext.Provider value={{ posts: postListData, categories: categoryListData, tags: tagListData, user: userStatus }}>
+      <DataContext.Provider value={{ posts: postListData, categories: categoryListData, tags: tagListData, user: userStatus, files: fileList }}>
         <ScrollToTop />
         <Header />
         <Container className="App-Container">
@@ -48,6 +51,7 @@ const App: VFC = () => {
             <Route path='/post/:id' element={<Post />} />
             <Route path='/master/:type' element={<Master />} />
             <Route path='/user/' element={<User />} />
+            <Route path='/media/' element={<MediaList />} />
           </Routes>
         </Container>
         <Footer />

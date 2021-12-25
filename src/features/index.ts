@@ -12,3 +12,7 @@ export { selectUser as selectUser } from "./User";
 export { userLogin as userLogin } from "./User";
 export { getUserData as getUserData } from "./User";
 export { userLogout as userLogout } from "./User";
+
+export { selectFile as selectFile } from "./File";
+export { getFileList as getFileList } from "./File";
+export { addFileItem as addFileItem } from "./File";

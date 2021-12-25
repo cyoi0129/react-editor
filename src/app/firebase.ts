@@ -1,5 +1,5 @@
 import { firebaseConfig } from './config';
-import { postData, dbPostItem, userLoginData, userInfoData } from './types'
+import { postData, dbPostItem, userLoginData, userInfoData, fileItem } from './types'
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/database';
@@ -20,10 +20,13 @@ export const uploadFile = async (file: File) => {
   const uploadTask = await fileRef.put(file, metadata);
   const downloadURL = await uploadTask.ref.getDownloadURL();
   return {
-    success: 1,
-    file: {
-      url: downloadURL
-    }
+    // success: 1,
+    // file: {
+    //   name: file.name,
+    //   url: downloadURL
+    // }
+    name: file.name,
+    url: downloadURL
   }
 }
 
@@ -31,6 +34,20 @@ export const downloadFile = async (fileName: string) => {
   const fileRef = storageRef.child('images/' + fileName);
   const fileURL = await fileRef.getDownloadURL();
   return fileURL;
+}
+
+export const fetchFileList = async () => {
+  const fileList = await storageRef.child('images/').listAll();
+  const items = fileList.items;
+  const results = await Promise.all(items.map(async (item) => {
+    const url = await item.getDownloadURL();
+    const result: fileItem = {
+      name: item.name,
+      url: url
+    }
+    return result;
+  }));
+  return results;
 }
 
 export const fetchData = async (target: string) => {
@@ -55,7 +72,6 @@ export const updatePost = async (post: dbPostItem) => {
   const result = await dataRef.val();
   return result;
 }
-
 
 export const removePost = async (id: string) => {
   dbRef.child('react-editor/posts/' + id).remove();
@@ -137,21 +153,21 @@ export const updateUserData = async (displayName: string, photoURL: string) => {
   });
 
   const result: userInfoData = updateResult ?
-  {
-    displayName: displayName,
-    email: userData?.email,
-    uid: userData?.uid,
-    refreshToken: userData?.refreshToken,
-    photoURL: photoURL
-  }
-  :
-  {
-    displayName: userData?.displayName,
-    email: userData?.email,
-    uid: userData?.uid,
-    refreshToken: userData?.refreshToken,
-    photoURL: userData?.photoURL
-  }
+    {
+      displayName: displayName,
+      email: userData?.email,
+      uid: userData?.uid,
+      refreshToken: userData?.refreshToken,
+      photoURL: photoURL
+    }
+    :
+    {
+      displayName: userData?.displayName,
+      email: userData?.email,
+      uid: userData?.uid,
+      refreshToken: userData?.refreshToken,
+      photoURL: userData?.photoURL
+    }
   return result;
 }
 
@@ -168,10 +184,10 @@ export const removeUserLogin = async () => {
   if (user) {
     console.log(user);
   }
-  auth.signOut().then(()=>{
+  auth.signOut().then(() => {
     console.log('Logout successed');
   })
-  .catch( (error)=>{
-    console.log(`Logout error (${error})`);
-  });
+    .catch((error) => {
+      console.log(`Logout error (${error})`);
+    });
 }

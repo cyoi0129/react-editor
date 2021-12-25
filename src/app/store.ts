@@ -1,5 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import masterReducer from '../features/Master';
+import fileReducer from '../features/File';
 import userReducer from '../features/User';
 import postReducer from '../features/Post';
 
@@ -8,6 +9,7 @@ export const store = configureStore({
     user: userReducer,
     masters: masterReducer,
     posts: postReducer,
+    files: fileReducer
   },
 });
 

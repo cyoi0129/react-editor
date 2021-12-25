@@ -62,8 +62,8 @@ const PostInfo: VFC<PostInfoProps> = (Props) => {
 
   const changeThumbnail = async (event: any) => {
     const result = await uploadFile(event.target.files[0]);
-    if (result.success === 1) {
-      setThumbnail(result.file.url);
+    if (result.name) {
+      setThumbnail(result.url);
     } else {
       console.log('Upload failed');
     }
