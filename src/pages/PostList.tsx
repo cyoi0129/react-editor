@@ -18,7 +18,7 @@ const PostList: VFC = () => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [posts, setPosts] = useState<postItem[] | []>(postList);
   const [offset, setOffset] = useState(0); // 何番目のアイテムから表示するか
-  const perPage: number = 1; // 1ページあたりに表示したいアイテムの数
+  const perPage: number = 10; // 1ページあたりに表示したいアイテムの数
   const handlePageChange = (data: any) => {
     let page_number = data['selected']; // クリックした部分のページ数が{selected: 2}のような形で返ってくる
     setOffset(page_number * perPage); // offsetを変更し、表示開始するアイテムの番号を変更
