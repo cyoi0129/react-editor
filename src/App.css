@@ -69,13 +69,15 @@ a {
     height: 20px;
     text-align: center;
     vertical-align: middle;
+    border: solid 1px #1976d2;
     border-radius: 50%;
 }
 .pagination > li.active {
     background: none;
+    border: solid 1px #1976d2;
 }
 .pagination > li.pagination__disabled {
-    background: none;
+    display: none;
 }
 .pagination > li > a {
     display: block;
@@ -83,16 +85,12 @@ a {
     cursor: pointer;
 }
 .pagination > li.active a {
-    color: #555;
+    color: #1976d2;
     cursor:auto
-}
-.pagination > li.pagination__disabled a {
-    color: #ccc;
-    cursor:not-allowed;
 }
 .pagination > li > a:hover {
     opacity: 0.5;
 }
-.pagination > li.active a:hover, .pagination > li.pagination__disabled a:hover {
+.pagination > li.active a:hover {
     opacity: 1;
 }

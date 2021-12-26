@@ -18,7 +18,7 @@ const PostList: VFC = () => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
   const [posts, setPosts] = useState<postItem[] | []>(postList);
   const [offset, setOffset] = useState(0); // 何番目のアイテムから表示するか
-  const perPage: number = 10; // 1ページあたりに表示したいアイテムの数
+  const perPage: number = 1; // 1ページあたりに表示したいアイテムの数
   const handlePageChange = (data: any) => {
     let page_number = data['selected']; // クリックした部分のページ数が{selected: 2}のような形で返ってくる
     setOffset(page_number * perPage); // offsetを変更し、表示開始するアイテムの番号を変更
@@ -56,7 +56,7 @@ const PostList: VFC = () => {
       {isSearch ?
         <Chip
           label={keyword}
-          sx={{mt:2}}
+          sx={{ mt: 2 }}
           variant="outlined"
           onDelete={searchOff}
         />
@@ -76,20 +76,24 @@ const PostList: VFC = () => {
           </>
         )}
       </List>
-      <ReactPaginate
-        previousLabel={'<'}
-        nextLabel={'>'}
-        breakLabel={'...'}
-        pageCount={Math.ceil(posts.length / perPage)} // 全部のページ数。端数の場合も考えて切り上げに。
-        marginPagesDisplayed={2} // 一番最初と最後を基準にして、そこからいくつページ数を表示するか
-        pageRangeDisplayed={5} // アクティブなページを基準にして、そこからいくつページ数を表示するか
-        onPageChange={handlePageChange} // クリック時のfunction
-        containerClassName={'pagination'} // ページネーションであるulに着くクラス名
-        activeClassName={'active'} // アクティブなページのliに着くクラス名
-        previousClassName={'pagination__previous'} // 「<」のliに着けるクラス名
-        nextClassName={'pagination__next'} // 「>」のliに着けるクラス名
-        disabledClassName={'pagination__disabled'} // 使用不可の「<,>」に着くクラス名
-      />
+      {posts.length > perPage ?
+        <ReactPaginate
+          previousLabel={'<'}
+          nextLabel={'>'}
+          breakLabel={'...'}
+          pageCount={Math.ceil(posts.length / perPage)} // 全部のページ数。端数の場合も考えて切り上げに。
+          marginPagesDisplayed={2} // 一番最初と最後を基準にして、そこからいくつページ数を表示するか
+          pageRangeDisplayed={5} // アクティブなページを基準にして、そこからいくつページ数を表示するか
+          onPageChange={handlePageChange} // クリック時のfunction
+          containerClassName={'pagination'} // ページネーションであるulに着くクラス名
+          activeClassName={'active'} // アクティブなページのliに着くクラス名
+          previousClassName={'pagination__previous'} // 「<」のliに着けるクラス名
+          nextClassName={'pagination__next'} // 「>」のliに着けるクラス名
+          disabledClassName={'pagination__disabled'} // 使用不可の「<,>」に着くクラス名
+        />
+        :
+        null
+      }
       <Fab color="primary" aria-label="save" sx={{ position: 'fixed', right: 16, bottom: 16, zIndex: 2 }} onClick={addPost}>
         <AddIcon />
       </Fab>
