@@ -23,7 +23,7 @@ const PostInfo: VFC<PostInfoProps> = (Props) => {
   const currentID: string = postInfo.id === '' ? 'New Post' : 'Post ID: ' + postInfo.id;
   const initTagList = postInfo.id === '' ? [] : postInfo.tag.map(tagItem => getMasterNameByID(tagItem, tagList));
   const initCategory = postInfo.id === '' ? '' : getMasterNameByID(postInfo.category, categoryList);
-  const initDate = postInfo.date === ''? new Date() : new Date(postInfo.date);
+  const initDate = postInfo.date === '' ? new Date() : new Date(postInfo.date);
   const [title, setTitle] = useState<string>(postInfo.title);
   const [description, setDescription] = useState<string>(postInfo.description);
   const [date, setDate] = useState<Date | null>(initDate);
@@ -172,16 +172,19 @@ const PostInfo: VFC<PostInfoProps> = (Props) => {
           <Typography variant="body1" sx={{ ml: 1 }}>Thumbnail</Typography>
           <label htmlFor="icon-button-file">
             <Input accept="image/*" id="icon-button-file" type="file" onChange={(event) => changeThumbnail(event)} />
-            <IconButton color="primary" aria-label="upload image" component="span">
+            <IconButton aria-label="upload image" component="span">
               <CloudUploadIcon />
             </IconButton>
           </label>
-          <IconButton color="primary" aria-label="select image" component="span" onClick={openImageLibrary}>
+          <IconButton sx={{ m: 0 }} aria-label="select image" component="span" onClick={openImageLibrary}>
             <InsertPhotoIcon />
           </IconButton>
-          <IconButton color="primary" aria-label="select image" component="span" onClick={removeThumbnail}>
-            <DeleteIcon />
-          </IconButton>
+          {thumbnail !== '' ?
+            <IconButton sx={{ m: 0 }} aria-label="select image" component="span" onClick={removeThumbnail}>
+              <DeleteIcon />
+            </IconButton>
+            :
+            null}
         </Stack>
         <Box sx={{ mx: 2 }}>
           {thumbnail !== '' ? <img src={thumbnail} width={160} height="auto" alt="Thumbnail" /> : <Typography variant="body2" color="GrayText">No Image</Typography>}
