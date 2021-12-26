@@ -1,7 +1,7 @@
 // basic
 import { VFC, useContext, useState, useEffect } from 'react';
 import { useAppDispatch } from '../app/hooks';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // components
 import { Loading, Notice, UserInfo } from '../components';
 import { userLogin } from '../features/User'
@@ -12,22 +12,14 @@ import { Avatar, Button, TextField, FormControlLabel, Checkbox, Grid, Box, Typog
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 const User: VFC = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const userStatus: userStatus = useContext(DataContext).user;
   const [login, setLogin] = useState<boolean>(userStatus.isLogined);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
 
   const defaultNotice: NoticeProps = {
     show: false,
     message: '',
-    type: 'success'
-  }
-
-  const successNotice: NoticeProps = {
-    show: true,
-    message: 'Login successed!',
     type: 'success'
   }
 
@@ -38,7 +30,6 @@ const User: VFC = () => {
   }
 
   const [loaded, setLoaded] = useState<NoticeProps>(defaultNotice);
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     event.preventDefault();

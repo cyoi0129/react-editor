@@ -72,7 +72,7 @@ const UserInfo: VFC = () => {
                     <Typography variant="body1">Profile Image</Typography>
                 </Stack>
                 <Box sx={{ m: 1 }}>
-                    {image === null || undefined ? <Typography variant="body2" color="GrayText">No Image</Typography> : <img src={image} width={120} alt="Profile Image" />}
+                    {image === null || undefined ? <Typography variant="body2" color="GrayText">No Image</Typography> : <img src={image} width={120} alt="Profile" />}
                 </Box>
                 <Box sx={{ m: 1 }}>
                     <Button variant="contained" onClick={saveUserInfo}>Save</Button>
