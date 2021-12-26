@@ -55,3 +55,44 @@ a {
         transform: translateY(0px);
     }
 }
+
+.pagination {
+    display: flex;
+    margin: 16px auto;
+}
+.pagination > li {
+    list-style: none;
+    margin: 0 8px;
+    padding: 8px 0;
+    background: #1976d2;
+    width: 36px;
+    height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 50%;
+}
+.pagination > li.active {
+    background: none;
+}
+.pagination > li.pagination__disabled {
+    background: none;
+}
+.pagination > li > a {
+    display: block;
+    color: #fff;
+    cursor: pointer;
+}
+.pagination > li.active a {
+    color: #555;
+    cursor:auto
+}
+.pagination > li.pagination__disabled a {
+    color: #ccc;
+    cursor:not-allowed;
+}
+.pagination > li > a:hover {
+    opacity: 0.5;
+}
+.pagination > li.active a:hover, .pagination > li.pagination__disabled a:hover {
+    opacity: 1;
+}

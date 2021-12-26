@@ -2,12 +2,15 @@
 import { VFC, useState, useContext, ChangeEvent } from 'react';
 // components
 import { DataContext } from '../App';
+import { ImageList } from './';
 import { masterItem, PostInfoProps } from '../app/types';
 import { getMasterNameByID, getMasterIDByName, convertDate } from '../app/utils';
 // 3rd party library
 import { uploadFile } from '../app/firebase';
 import { Theme, useTheme, styled, Box, TextField, FormControl, Select, MenuItem, OutlinedInput, Chip, SelectChangeEvent, Stack, IconButton, InputLabel, Typography } from '@mui/material';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import DeleteIcon from '@mui/icons-material/Delete';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
@@ -20,12 +23,14 @@ const PostInfo: VFC<PostInfoProps> = (Props) => {
   const currentID: string = postInfo.id === '' ? 'New Post' : 'Post ID: ' + postInfo.id;
   const initTagList = postInfo.id === '' ? [] : postInfo.tag.map(tagItem => getMasterNameByID(tagItem, tagList));
   const initCategory = postInfo.id === '' ? '' : getMasterNameByID(postInfo.category, categoryList);
+  const initDate = postInfo.date === ''? new Date() : new Date(postInfo.date);
   const [title, setTitle] = useState<string>(postInfo.title);
   const [description, setDescription] = useState<string>(postInfo.description);
-  const [date, setDate] = useState<Date | null>(new Date(postInfo.date));
+  const [date, setDate] = useState<Date | null>(initDate);
   const [thumbnail, setThumbnail] = useState<string>(postInfo.thumbnail);
   const [category, setCategory] = useState<string>(initCategory);
   const [selectedTagList, setSelectedTagList] = useState<string[] | []>(initTagList);
+  const [showImageLibrary, setShowImageLibrary] = useState<boolean>(false);
 
   const changeTitle = (event: ChangeEvent<HTMLInputElement>) => {
     changePostInfo('title', event.target.value);
@@ -67,6 +72,21 @@ const PostInfo: VFC<PostInfoProps> = (Props) => {
     } else {
       console.log('Upload failed');
     }
+  }
+
+  const removeThumbnail = () => {
+    setThumbnail('');
+  }
+
+  const changeThumbnailByURL = (url: string) => {
+    setThumbnail(url);
+  }
+  const openImageLibrary = () => {
+    setShowImageLibrary(true);
+  }
+
+  const closeImageLibrary = () => {
+    setShowImageLibrary(false);
   }
 
   const Input = styled('input')({
@@ -149,18 +169,25 @@ const PostInfo: VFC<PostInfoProps> = (Props) => {
           </LocalizationProvider>
         </Box>
         <Stack direction="row" alignItems="center" spacing={2}>
+          <Typography variant="body1" sx={{ ml: 1 }}>Thumbnail</Typography>
           <label htmlFor="icon-button-file">
             <Input accept="image/*" id="icon-button-file" type="file" onChange={(event) => changeThumbnail(event)} />
-            <IconButton color="primary" aria-label="upload picture" component="span">
-              <PhotoCamera />
+            <IconButton color="primary" aria-label="upload image" component="span">
+              <CloudUploadIcon />
             </IconButton>
           </label>
-          <Typography variant="body1">Thumbnail</Typography>
+          <IconButton color="primary" aria-label="select image" component="span" onClick={openImageLibrary}>
+            <InsertPhotoIcon />
+          </IconButton>
+          <IconButton color="primary" aria-label="select image" component="span" onClick={removeThumbnail}>
+            <DeleteIcon />
+          </IconButton>
         </Stack>
         <Box sx={{ mx: 2 }}>
-          {thumbnail !== '' ? <img src={thumbnail} width={160} height={120} alt="Thumbnail" /> : <Typography variant="body2" color="GrayText">No Image</Typography>}
+          {thumbnail !== '' ? <img src={thumbnail} width={160} height="auto" alt="Thumbnail" /> : <Typography variant="body2" color="GrayText">No Image</Typography>}
         </Box>
       </Stack>
+      <ImageList show={showImageLibrary} close={closeImageLibrary} changeImage={changeThumbnailByURL} />
     </>
   )
 }

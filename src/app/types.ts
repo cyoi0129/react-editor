@@ -129,3 +129,9 @@ export interface PostInfoProps {
 export interface PostItemProps {
   data: postItem;
 }
+
+export interface ImageListProps {
+  show: boolean,
+  close: any,
+  changeImage: any
+}

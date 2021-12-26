@@ -8,3 +8,4 @@ export { default as ListedItem } from './ListedItem';
 export { default as UserInfo } from './UserInfo';
 export { default as Loading } from './Loading';
 export { default as Notice } from './Notice';
+export { default as ImageList } from './ImageList';
