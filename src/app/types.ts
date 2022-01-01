@@ -19,7 +19,7 @@ export interface postMeta {
 
 export interface postContent {
   time: number,
-  blocks:[],
+  blocks: [],
   version: string
 }
 
@@ -71,11 +71,11 @@ export interface userLoginData {
 }
 
 export interface userInfoData {
-  displayName: string|null|undefined,
-  email: string|null|undefined,
-  uid: string|null|undefined,
-  refreshToken: string|null|undefined,
-  photoURL: string|null|undefined
+  displayName: string | null | undefined,
+  email: string | null | undefined,
+  uid: string | null | undefined,
+  refreshToken: string | null | undefined,
+  photoURL: string | null | undefined
 }
 
 export interface userStatus {
@@ -88,6 +88,36 @@ export interface userStatus {
 export interface userUpdateData {
   displayName: string,
   photoURL: string
+}
+
+export interface headerItem {
+  text: string,
+  level: number,
+}
+
+export interface paragraphItem {
+  text: string
+}
+
+export interface listItem {
+  items: string[],
+  style: string
+}
+
+export interface imageItem {
+  caption: string,
+  file: {
+    url: string
+  },
+  stretched: boolean,
+  withBackground: boolean,
+  withBorder: boolean
+}
+
+export interface ElementItem {
+  data: headerItem | paragraphItem | listItem | imageItem,
+  id: string,
+  type: string
 }
 
 export interface RenderTree {
@@ -103,6 +133,16 @@ export interface EditorProps {
     version: string
   };
   changeContent: any;
+}
+
+export interface PreviewProps {
+  content: {
+    time: number,
+    blocks: [],
+    version: string
+  };
+  showPreview: boolean;
+  closePreview: any;
 }
 
 export interface NoticeProps {
@@ -134,4 +174,8 @@ export interface ImageListProps {
   show: boolean,
   close: any,
   changeImage: any
+}
+
+export interface PreviewContentProps {
+  element: ElementItem;
 }

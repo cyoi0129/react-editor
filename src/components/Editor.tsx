@@ -12,8 +12,7 @@ const Editor: VFC<EditorProps> = (Props) => {
   const Header = require('@editorjs/header');
   const List = require('@editorjs/list');
   const ImageTool = require('@editorjs/image');
-  // const SimpleImage = require('@editorjs/simple-image');
-  const Table = require('@editorjs/table');
+  // const Table = require('@editorjs/table');
   const EditorJSStyle = require('editorjs-style');
 
   function createEditor() {
@@ -30,7 +29,7 @@ const Editor: VFC<EditorProps> = (Props) => {
       tools: {
         header: Header,
         list: List,
-        table: Table,
+        // table: Table,
         image: {
           class: ImageTool,
           config: {

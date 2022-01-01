@@ -3,7 +3,7 @@ import { VFC, useContext, useState } from 'react';
 import { useAppDispatch } from '../app/hooks';
 import { useParams, useNavigate } from 'react-router-dom';
 // components
-import { PostInfo, Editor, Loading, Notice } from '../components';
+import { PostInfo, Editor, Loading, Notice, Preview } from '../components';
 import { DataContext } from '../App';
 import { postItem, postInfo, postContent } from '../app/types';
 import { getPostByID, getPostInfo, post2DB, createPostObj } from '../app/utils';
@@ -12,6 +12,7 @@ import { updatePostItem, removePostItem, addPostItem } from '../features';
 import { Grid, Fab, Typography, Box } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PreviewIcon from '@mui/icons-material/Preview';
 
 const Post: VFC = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const Post: VFC = () => {
   const [postContent, setPostContent] = useState<postContent>(postObj.content);
   const [loading, setLoading] = useState<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
+  const [preview, setPreview] = useState<boolean>(false);
 
   const changeContent = (data: postContent) => {
     setPostContent(data);
@@ -73,6 +75,10 @@ const Post: VFC = () => {
     }
   }
 
+  const changePreview = () => {
+    setPreview(!preview);
+  }
+
   const removePost = () => {
     if (postID !== '' && postID !== 'new') {
       setLoading(true);
@@ -100,12 +106,16 @@ const Post: VFC = () => {
           </Box>
         </Grid>
       </Grid>
+      <Fab sx={{ backgroundColor: '#4caf50', color: '#fff', position: 'fixed', right: 144, bottom: 16, zIndex: 2 }} aria-label="remove" onClick={changePreview}>
+        <PreviewIcon />
+      </Fab>
       <Fab color="primary" aria-label="save" sx={{ position: 'fixed', right: 80, bottom: 16, zIndex: 2 }} onClick={saveData}>
         <SaveIcon />
       </Fab>
       <Fab sx={{ backgroundColor: '#d32f2f', color: '#fff', position: 'fixed', right: 16, bottom: 16, zIndex: 2 }} aria-label="remove" onClick={removePost}>
         <DeleteIcon />
       </Fab>
+      <Preview content={postContent} closePreview={changePreview} showPreview={preview} />
       <Loading show={loading} />
       <Notice show={loaded} message="Save successed!" type="success" />
     </>
