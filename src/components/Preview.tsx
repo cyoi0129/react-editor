@@ -48,7 +48,6 @@ const Preview: VFC<PreviewProps> = (Props) => {
             <Dialog open={open} onClose={handleClose} scroll="paper" aria-labelledby="scroll-dialog-title" aria-describedby="scroll-dialog-description" sx={{width: spView? 360: 960}} className="previewArea">
                 <DialogTitle id="scroll-dialog-title">Preview ({spView? 'SP': 'PC'})</DialogTitle>
                 <DialogContent dividers>
-                    <div></div>
                     {(content.blocks as ElementItem[]).map(item => createItem(item))}
                 </DialogContent>
                 <DialogActions>
