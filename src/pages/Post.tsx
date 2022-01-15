@@ -13,6 +13,7 @@ import { Grid, Fab, Typography, Box } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PreviewIcon from '@mui/icons-material/Preview';
+import { AnyArray } from 'immer/dist/internal';
 
 const Post: VFC = () => {
   const navigate = useNavigate();

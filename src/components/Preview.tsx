@@ -1,7 +1,7 @@
 // basic
 import { VFC, useEffect, useState } from 'react';
 // components
-import { PreviewProps, ElementItem, headerItem, paragraphItem, listItem, imageItem } from '../app/types';
+import { PreviewProps, ElementItem, headerItem, paragraphItem, listItem, imageItem, libraryItem } from '../app/types';
 // 3rd party library
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, List, ListItem } from '@mui/material';
 
@@ -37,6 +37,9 @@ const Preview: VFC<PreviewProps> = (Props) => {
                 break;
             case 'image':
                 result = <p><img src={(item.data as imageItem).file.url} alt={(item.data as imageItem).caption} /></p>
+                break;
+            case 'library':
+                result = <p><img src={(item.data as libraryItem).url} alt="" /></p>
                 break;
             default:
         }

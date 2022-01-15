@@ -32,7 +32,7 @@ const ImageList: VFC<ImageListProps> = (Props) => {
       }, [fileList]);
 
     return (
-        <Dialog onClose={handleClose} open={open}>
+        <Dialog id="imageModal" onClose={handleClose} open={open}>
             <DialogTitle>Select Image</DialogTitle>
             <List sx={{ maxWidth: 640, maxHeight: 480 }}>
                 {(list as Array<fileItem>).map((file, index) =>

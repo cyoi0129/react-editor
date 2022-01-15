@@ -114,8 +114,12 @@ export interface imageItem {
   withBorder: boolean
 }
 
+export interface libraryItem {
+  url: string
+}
+
 export interface ElementItem {
-  data: headerItem | paragraphItem | listItem | imageItem,
+  data: headerItem | paragraphItem | listItem | imageItem | libraryItem,
   id: string,
   type: string
 }
