@@ -9,6 +9,7 @@ import { uploadFile } from '../app/firebase';
 
 const Editor: VFC<EditorProps> = (Props) => {
   const { content, changeContent } = Props;
+  console.log(content)
   const fileList = useContext(DataContext).files;
 
   // tslint:disable-next-line:no-var-requires
@@ -30,37 +31,49 @@ const Editor: VFC<EditorProps> = (Props) => {
       };
     }
 
+    private existData: any;
+
+    constructor(data: any) {
+      this.existData = data;
+    }
+
     //プラグインのUI処理
     render() {
       const div = document.createElement('div');
+      const existImg = document.createElement('img');
+      existImg.src = this.existData.data.url;
+      div.appendChild(existImg);
+
       const LibraryTrigger = document.querySelector('#lab');
+      (LibraryTrigger as Element).addEventListener('click', () => {
+        div.appendChild(box);
+      });
+      
       const box = document.createElement('div');
-      const selectImage = (url: string) => {
-        const img = document.createElement('img');
-        img.src = url;
-        img.className = 'insertImg'
-        div.appendChild(img);
-        box.classList.remove('show');
-      }
       box.className = 'selectionBox';
+      const button = document.createElement('button');
+      button.textContent = 'OK';
+      button.onclick = () => {
+        div.removeChild(box);
+      }
       const ul = document.createElement('ul');
       fileList.forEach(item => {
         const li = document.createElement('li');
-        li.onclick = () => {
-          const url = li.querySelector('img')?.src;
-          selectImage(url as string);
-        }
         const img = document.createElement('img');
         img.src = item.url;
         img.alt = item.name;
+        li.onclick = () => {
+          div.appendChild(img);
+          div.removeChild(box);
+        }
         li.appendChild(img);
         ul.appendChild(li);
-      })
-      box.appendChild(ul);
-      (LibraryTrigger as Element).addEventListener('click', () => {
-        div.appendChild(box);
-        box.classList.add('show');
-      })
+      });
+      const inner = document.createElement('div');
+      inner.className = 'inner';
+      inner.appendChild(ul);
+      inner.appendChild(button);
+      box.appendChild(inner);
       
       return div;
     }

@@ -101,9 +101,12 @@ a {
     max-width: 100%;
     margin: 32px 0;
 }
-
-.selectionBox {
+.image-tool__caption {
     display: none;
+}
+.selectionBox { 
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-items: center;
     position: fixed;
@@ -114,14 +117,22 @@ a {
     top: 0;
     z-index: 9999;
 }
-.selectionBox.show {
-    display: flex;
-}
-.selectionBox ul {
+
+.selectionBox .inner {
+    margin-top:36px;
     background: #fff;
     border-radius: 8px;
+    max-width: 920px;
+    max-height: 640px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+}
+
+.selectionBox ul {
     max-width: 880px;
-    height: 640px;
+    height: 560px;
     overflow-y: scroll;
     margin: 0 auto;
     display: flex;
@@ -132,16 +143,36 @@ a {
 .selectionBox ul li {
     list-style: none;
     margin: 8px;
+    padding: 8px;
     width: 120px;
     height: 120px;
-    padding: 8px;
     border: solid 1px #999;
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-items: center;
+    cursor: pointer;
+}
+
+.selectionBox ul li:hover {
+    border: solid 2px #1976d2;
+    margin: 6px;
+    opacity: .7;
 }
 
 .selectionBox ul li img {
     width: 100%;
+}
+
+.selectionBox button {
+    padding: 12px;
+    background: #1976d2;
+    color: #fff;
+    font-size: 18px;
+    width: 120px;
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+    margin-bottom: 12px;
+    cursor: pointer;
 }
