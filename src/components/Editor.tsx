@@ -43,19 +43,17 @@ const Editor: VFC<EditorProps> = (Props) => {
       const existImg = document.createElement('img');
       existImg.src = this.existData.data.url;
       div.appendChild(existImg);
+      const modal = document.getElementById('modal');
 
       const LibraryTrigger = document.querySelector('#lab');
       (LibraryTrigger as Element).addEventListener('click', () => {
-        div.appendChild(box);
+        (modal as Element).innerHTML = '';
+        (modal as Element).appendChild(box);
+        box.classList.add('display');
       });
-      
+
       const box = document.createElement('div');
       box.className = 'selectionBox';
-      const button = document.createElement('button');
-      button.textContent = 'OK';
-      button.onclick = () => {
-        div.removeChild(box);
-      }
       const ul = document.createElement('ul');
       fileList.forEach(item => {
         const li = document.createElement('li');
@@ -64,24 +62,19 @@ const Editor: VFC<EditorProps> = (Props) => {
         img.alt = item.name;
         li.onclick = () => {
           div.appendChild(img);
-          div.removeChild(box);
-        }
+          box.classList.remove('display');
+        };
         li.appendChild(img);
         ul.appendChild(li);
       });
-      const inner = document.createElement('div');
-      inner.className = 'inner';
-      inner.appendChild(ul);
-      inner.appendChild(button);
-      box.appendChild(inner);
-      
+      box.appendChild(ul);
       return div;
     }
 
     //保存時のデータ抽出
     save(imageData: any) {
       console.log(imageData);
-      if (imageData.querySelector('.insertImg')){
+      if (imageData.querySelector('.insertImg')) {
         return {
           url: imageData.querySelector('.insertImg').src
         }
@@ -146,7 +139,10 @@ const Editor: VFC<EditorProps> = (Props) => {
   }, [])
 
   return (
-    <div id="editorjs"></div>
+    <>
+      <div id="editorjs"></div>
+      <div id="modal"></div>
+    </>
   )
 }
 
